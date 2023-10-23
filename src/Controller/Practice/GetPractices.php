@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\StudyProgram;
+namespace App\Controller\Practice;
 
 use App\Entity\PracticeOffer;
 use App\Entity\Student;
@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 
-class GetPrograms extends AbstractController
+class GetPractices extends AbstractController
 {
     /**
      * @var StudyProgramRepository
