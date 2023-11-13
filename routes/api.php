@@ -23,3 +23,7 @@ Route::get('/lol/{name}', [TestController::class, 'testMethod']);
 Route::get('/test/{name?}', [TestController::class, 'covidMethod']);
 Route::get('/overkill', [TestController::class, 'overkillMethod']);
 Route::post('/save-student', [TestController::class, 'saveStudent']);
+
+Route::post('/company/create', [\App\Http\Controllers\Company\CreateController::class, 'method']);
+Route::post('/practice-offer/create', [\App\Http\Controllers\PracticeOffer\CreateController::class, 'method']);
+Route::post('/contract/create', [\App\Http\Controllers\Contract\CreateController::class, 'method']);
