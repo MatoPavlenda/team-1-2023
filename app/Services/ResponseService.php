@@ -4,6 +4,8 @@ namespace App\Services;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
+use Illuminate\Support\Facades\File;
+
 class ResponseService
 {
     public function createUnauthorizedResponse($message = 'Unauthorized')
@@ -28,6 +30,16 @@ class ResponseService
             'code' => 200,
             'data' => $jsonData
         ], 200);
+    }
+
+    public function createFileDownloadResponse($filePath, $filename) {
+        $contentType = File::mimeType($filePath);
+
+        $headers = [
+            'Content-Type' => $contentType, // Adjust the content type based on your file type
+        ];
+
+        return response()->download($filePath, $filename, $headers);
     }
 
     public function createErrorResponse($message = '')
