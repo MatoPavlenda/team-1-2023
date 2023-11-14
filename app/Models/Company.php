@@ -24,4 +24,9 @@ class Company extends Model
     public $timestamps = true; // Laravel will automatically manage created_at and updated_at timestamps
 
     protected $dateFormat = 'Y-m-d H:i:s'; // Adjust the date format if needed
+
+    public function contracts()
+    {
+        return $this->hasMany(CompanySchoolContract::class, 'company_id');
     }
+}
