@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
-{ //Test laravel comitu
+{
     protected $fillable = [
         'name',
         'street',
