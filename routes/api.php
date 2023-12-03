@@ -39,3 +39,5 @@ Route::post('/contract/get', [\App\Http\Controllers\Contract\GetController::clas
 Route::post('/contract/get-file', [\App\Http\Controllers\Contract\GetFileController::class, 'method']);
 Route::post('/contract/edit', [\App\Http\Controllers\Contract\EditController::class, 'method']);
 Route::post('/contract/delete', [\App\Http\Controllers\Contract\DeleteController::class, 'method']);
+
+Route::post('/ukf_employee/create', [\App\Http\Controllers\UKF_Employee\CreateController::class, 'method']);
