@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\Student;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,11 +20,13 @@ use App\Http\Controllers\TestController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+/*
 Route::get('/lol/{name}', [TestController::class, 'testMethod']);
+Route::get('/mojaMetoda', [TestController::class, 'mojaMetoda']);
 Route::get('/test/{name?}', [TestController::class, 'covidMethod']);
 Route::get('/overkill', [TestController::class, 'overkillMethod']);
 Route::post('/save-student', [TestController::class, 'saveStudent']);
+Route::post('/postMetoda', [TestController::class, 'postMetoda']); */
 
 Route::post('/company/create', [\App\Http\Controllers\Company\CreateController::class, 'method']);
 Route::post('/company/get', [\App\Http\Controllers\Company\GetController::class, 'method']);
@@ -39,3 +43,8 @@ Route::post('/contract/get', [\App\Http\Controllers\Contract\GetController::clas
 Route::post('/contract/get-file', [\App\Http\Controllers\Contract\GetFileController::class, 'method']);
 Route::post('/contract/edit', [\App\Http\Controllers\Contract\EditController::class, 'method']);
 Route::post('/contract/delete', [\App\Http\Controllers\Contract\DeleteController::class, 'method']);
+
+Route::post('/student/create', [Student\CreateController::class, 'method']);
+Route::get('/student/get/{id}', [Student\GetController::class, 'method']);
+Route::post('/student/edit', [Student\EditController::class, 'method']);
+Route::post('/student/delete', [Student\DeleteController::class, 'method']);
