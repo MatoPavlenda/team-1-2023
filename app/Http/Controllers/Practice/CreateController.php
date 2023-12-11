@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Practice;
 
 use App\Http\Controllers\Controller;
+use App\Models\Practice;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class CreateController extends Controller
 {
