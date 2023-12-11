@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TestController;
 use App\Http\Controllers\Student;
 
 
@@ -20,13 +19,6 @@ use App\Http\Controllers\Student;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-/*
-Route::get('/lol/{name}', [TestController::class, 'testMethod']);
-Route::get('/mojaMetoda', [TestController::class, 'mojaMetoda']);
-Route::get('/test/{name?}', [TestController::class, 'covidMethod']);
-Route::get('/overkill', [TestController::class, 'overkillMethod']);
-Route::post('/save-student', [TestController::class, 'saveStudent']);
-Route::post('/postMetoda', [TestController::class, 'postMetoda']); */
 
 /**
  *  Company
