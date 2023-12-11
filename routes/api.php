@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Student;
+use App\Http\Controllers\Practice;
 
 
 /*
@@ -57,3 +58,9 @@ Route::get('/student/getAllStudents', [Student\GetController::class, 'getAllStud
 Route::post('/student/create', [Student\CreateController::class, 'createStudent']);
 Route::post('/student/{id}/delete/', [Student\DeleteController::class, 'deleteStudent']);
 Route::patch('/student/{id}/edit', [Student\EditController::class, 'updateStudent']);
+
+
+/**
+ *  Practice
+ */
+Route::post('/practice/create', [Practice\CreateController::class, 'createPractice']);
