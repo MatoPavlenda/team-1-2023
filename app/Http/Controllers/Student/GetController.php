@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Student;
-use http\Env\Response;
 
 class GetController extends Controller
 {
 
-    public function method(int $id)
+    public function getStudentById(int $id)
     {
         $student = Student::find($id);
         if($student){
@@ -17,5 +16,20 @@ class GetController extends Controller
         } else {
             return response()->json("Student with id " . $id . " not found", 404);
         }
+    }
+
+    public function getStudentByEmail(String $email)
+    {
+        $student = Student::WHERE('email', "=", $email)->first();
+        if($student){
+            return response()->json($student);
+        } else {
+            return response()->json("Student with email " . $email . " not found", 404);
+        }
+    }
+
+    public function getAllStudents(){
+        $students = Student::all();
+        return response()->json($students);
     }
 }
