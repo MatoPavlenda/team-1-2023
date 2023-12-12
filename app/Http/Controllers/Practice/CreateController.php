@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CreateController extends Controller
 {
-
+//s
     public function createPractice(Request $request)
     {
         $validator = Validator::make($request->all(), [
