@@ -41,3 +41,6 @@ Route::post('/contract/edit', [\App\Http\Controllers\Contract\EditController::cl
 Route::post('/contract/delete', [\App\Http\Controllers\Contract\DeleteController::class, 'method']);
 
 Route::post('/ukf_employee/create', [\App\Http\Controllers\UKF_Employee\CreateController::class, 'method']);
+Route::post('/ukf_employee/get', [\App\Http\Controllers\UKF_Employee\GetController::class, 'method']);
+Route::post('/ukf_employee/edit', [\App\Http\Controllers\UKF_Employee\EditController::class, 'method']);
+Route::post('/ukf_employee/delete', [\App\Http\Controllers\UKF_Employee\DeleteController::class, 'method']);

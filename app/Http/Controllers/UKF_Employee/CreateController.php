@@ -42,6 +42,8 @@ class CreateController extends Controller
         $email = $request->get('email');
         $password = $request->get('password');
 
+        // validácia zatiaľ nefunguje
+        /*
         $validationResult = $this->validationService->validateVariables(
             [
                 [
@@ -100,19 +102,22 @@ class CreateController extends Controller
         );
 
         if ($validationResult === true) {
-            $ukf_employee = new UKF_Employee();
+        */
+        $ukf_employee = new UKF_Employee();
 
-            $ukf_employee->name = $name;
-            $ukf_employee->surname = $surname;
-            $ukf_employee->phone = $phone;
-            $ukf_employee->email = $email;
-            $ukf_employee->password = Hash::make($password);
+        $ukf_employee->name = $name;
+        $ukf_employee->surname = $surname;
+        $ukf_employee->phone = $phone;
+        $ukf_employee->email = $email;
+        $ukf_employee->password = Hash::make($password);
 
-            $ukf_employee->save();
+        $ukf_employee->save();
 
-            return $this->responseService->createSuccessfulResponse();
+        return $this->responseService->createSuccessfulResponse();
+        /*
         } else {
             return $this->validationService->giveValidationResponseError($validationResult);
         }
+        */
     }
 }
