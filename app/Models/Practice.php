@@ -24,4 +24,5 @@ class Practice extends Model
         'finished',
         'feedback',
     ];
+    //s
 }
