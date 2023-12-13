@@ -64,3 +64,5 @@ Route::patch('/student/{id}/edit', [Student\EditController::class, 'updateStuden
  *  Practice
  */
 Route::post('/practice/create', [Practice\CreateController::class, 'createPractice']);
+Route::post('/practice/{id}/edit', [Practice\EditController::class, 'updatePractice']);
+
