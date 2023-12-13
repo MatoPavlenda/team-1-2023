@@ -7,23 +7,21 @@ use App\Models\Practice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
 class CreateController extends Controller
 {
 //s
     public function createPractice(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
-            'student_id' => 'required|exists:students,id',
-            'practice_offer_id' => 'required|exists:practice_offers,id',
-            'company_employee_id' => 'required|exists:company_employees,id',
+            'student_id' => 'required|exists:student,id',
+            'practice_offer_id' => 'required|exists:practice_offer,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'startDate' => 'required|date',
             'endDate' => 'nullable|date|after_or_equal:startDate',
             'active' => 'required|boolean',
             'finished' => 'required|boolean',
-            'feedback' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {
