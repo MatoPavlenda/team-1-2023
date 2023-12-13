@@ -57,3 +57,13 @@ Route::get('/student/getAllStudents', [Student\GetController::class, 'getAllStud
 Route::post('/student/create', [Student\CreateController::class, 'createStudent']);
 Route::post('/student/{id}/delete/', [Student\DeleteController::class, 'deleteStudent']);
 Route::patch('/student/{id}/edit', [Student\EditController::class, 'updateStudent']);
+
+
+/*
+ * Department
+ */
+Route::post('/department/create', [\App\Http\Controllers\Department\CreateController::class, 'createDepartment']);
+Route::get('/department/getAll', [\App\Http\Controllers\Department\GetController::class, 'getAllDepartments']);
+Route::get('/department/{id}/get', [\App\Http\Controllers\Department\GetController::class, 'getDepartmentById']);
+Route::post('/department/{id}/edit', [\App\Http\Controllers\Department\EditController::class, 'updateDepartment']);
+Route::post('/department/{id}/delete', [\App\Http\Controllers\Department\DeleteController::class, 'deleteDepartment']);
