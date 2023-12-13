@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ResponseService;
 use App\Services\ValidatorService;
 use Illuminate\Http\Request;
+use function MongoDB\BSON\toJSON;
 
 class TestController extends Controller
 {
@@ -29,28 +30,27 @@ class TestController extends Controller
 
     private $students = [
         'ukf' => [
-            'Martin',
-            'Peter',
-            'Jozef',
-            'Ingrida'
+            'Marek',
+            'Zuzana',
+            'Roman',
+            'Simon'
         ],
         'spu' => [
-            'Martin',
-            'Peter',
-            'Jozef',
-            'Ingrida',
+            'DanoKis',
+            'Nigolas',
+            'Ivan',
+            'SamoCabaj',
         ],
         'uk' => [
-            'Martin',
-            'Peter',
-            'Jozef',
-            'Ingrida',
+            'Blbecek1',
+            'Blbecek2',
+            'Blbecek3'
         ],
         'stu' => [
-            'Martin',
-            'Peter',
-            'Jozef',
-            'Ingrida',
+            'MartinM',
+            'DruhyTypek',
+            'TretiTypek',
+            'StvrtyTypek',
         ],
     ];
     public function testMethod(string $name)
@@ -99,11 +99,20 @@ class TestController extends Controller
 
     public function saveStudent(Request $request)
     {
-        //$data = $request->json('ukf');
         $data = $request->input('ukf');
-        //$data = $request->post('ukf');
 
         $this->students['ukf'][] = $data;
+        $this->students['spu'][] = $request->input('spu');
         return response()->json($this->students);
+    }
+
+    public function mojaMetoda(){
+        $vysledok = array_merge($this->students['ukf'], $this->students['spu']);
+        return response()->json($vysledok);
+    }
+
+    public function postMetoda(Request $request){
+        $vysledok = $request->json("ukf");
+        return response()->json($vysledok);
     }
 }
