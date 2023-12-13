@@ -21,7 +21,6 @@ return new class extends Migration
         });
     }
 
-//php artisan make:migration create_practise_report_table
     /**
      * Reverse the migrations.
      */
