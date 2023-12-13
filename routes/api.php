@@ -86,3 +86,13 @@ Route::get("study-program/get-all", [StudyProgram\StudyProgramController::class,
 Route::delete("study-program/delete", [StudyProgram\StudyProgramController::class, 'deleteStudyProgram']);
 Route::patch("study-program/patch", [StudyProgram\StudyProgramController::class, 'editStudyProgram']);
 
+
+
+/*
+ * Department
+ */
+Route::post('/department/create', [\App\Http\Controllers\Department\CreateController::class, 'createDepartment']);
+Route::get('/department/getAll', [\App\Http\Controllers\Department\GetController::class, 'getAllDepartments']);
+Route::get('/department/{id}/get', [\App\Http\Controllers\Department\GetController::class, 'getDepartmentById']);
+Route::post('/department/{id}/edit', [\App\Http\Controllers\Department\EditController::class, 'updateDepartment']);
+Route::post('/department/{id}/delete', [\App\Http\Controllers\Department\DeleteController::class, 'deleteDepartment']);
