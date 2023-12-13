@@ -47,5 +47,24 @@ Route::post('/ukf_employee/create', [\App\Http\Controllers\UKF_Employee\CreateCo
 Route::get('/ukf_employee/getAllUKF_Employees', [\App\Http\Controllers\UKF_Employee\GetController::class, 'getAllUKF_Employees']);
 Route::get('/ukf_employee/{id}/get', [\App\Http\Controllers\UKF_Employee\GetController::class, 'getUKF_EmployeeById']);
 Route::get('/ukf_employee/getByEmail/{email}', [\App\Http\Controllers\UKF_Employee\GetController::class, 'getUKF_EmployeeByEmail']);
+Route::get('/ukf_employee/getByFullName/{name}/{surname}', [\App\Http\Controllers\UKF_Employee\GetController::class, 'getUKF_EmployeeByFullName']);
+Route::get('/ukf_employee/getByName/{name}', [\App\Http\Controllers\UKF_Employee\GetController::class, 'getUKF_EmployeeByName']);
+Route::get('/ukf_employee/getBySurname/{surname}', [\App\Http\Controllers\UKF_Employee\GetController::class, 'getUKF_EmployeeBySurname']);
 Route::post('/ukf_employee/{id}/edit', [\App\Http\Controllers\UKF_Employee\EditController::class, 'updateUKF_Employee']);
 Route::post('/ukf_employee/{id}/delete', [\App\Http\Controllers\UKF_Employee\DeleteController::class, 'deleteUKF_Employee']);
+
+/*
+  Company Employee
+ */
+Route::post('/company_employee/create', [\App\Http\Controllers\CompanyEmployee\CreateController::class, 'createCompanyEmployee']);
+Route::post('/company_employee/{id}/edit', [\App\Http\Controllers\CompanyEmployee\EditController::class, 'updateCompanyEmployee']);
+Route::post('/company_employee/{id}/delete', [\App\Http\Controllers\CompanyEmployee\DeleteController::class, 'deleteCompanyEmployee']);
+Route::get('/company_employee/{id}/get', [\App\Http\Controllers\CompanyEmployee\GetController::class, 'getCompanyEmployeeById']);
+Route::get('/company_employee/getByEmail/{email}', [\App\Http\Controllers\CompanyEmployee\GetController::class, 'getCompanyEmployeeByEmail']);
+Route::get('/company_employee/getByFullName/{name}/{surname}', [\App\Http\Controllers\CompanyEmployee\GetController::class, 'getCompanyEmployeeByFullName']);
+Route::get('/company_employee/getByName/{name}', [\App\Http\Controllers\CompanyEmployee\GetController::class, 'getCompanyEmployeeByName']);
+Route::get('/company_employee/getBySurname/{surname}', [\App\Http\Controllers\CompanyEmployee\GetController::class, 'getCompanyEmployeeBySurname']);
+Route::get('/company_employee/getByCompanyName/{companyName}', [\App\Http\Controllers\CompanyEmployee\GetController::class, 'getCompanyEmployeeByCompanyName']);
+Route::get('/company_employee/getByPosition/{position}', [\App\Http\Controllers\CompanyEmployee\GetController::class, 'getCompanyEmployeeByPosition']);
+Route::get('/company_employee/getByCompanyAndPosition/{companyName}/{position}', [\App\Http\Controllers\CompanyEmployee\GetController::class, 'getCompanyEmployeeByCompanyAndPosition']);
+Route::get('/company_employee/getAll', [\App\Http\Controllers\CompanyEmployee\GetController::class, 'getAllCompanyEmployees']);
