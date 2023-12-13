@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UKF_Employee extends Model
 {
+    use HasFactory;
+    use SoftDeletes;
+
     protected $fillable = [
         'name',
         'surname',
@@ -19,7 +23,7 @@ class UKF_Employee extends Model
 
     protected $primaryKey = 'id'; // Assuming 'id' is the primary key
 
-    protected $keyType = 'int'; // Depending on your database, it could be 'int', 'string', etc.
+    protected $keyType = 'int';
 
     public $timestamps = true; // Laravel will automatically manage created_at and updated_at timestamps
 

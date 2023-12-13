@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
-
+use App\Http\Controllers\UKF_Employee;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -40,7 +40,12 @@ Route::post('/contract/get-file', [\App\Http\Controllers\Contract\GetFileControl
 Route::post('/contract/edit', [\App\Http\Controllers\Contract\EditController::class, 'method']);
 Route::post('/contract/delete', [\App\Http\Controllers\Contract\DeleteController::class, 'method']);
 
-Route::post('/ukf_employee/create', [\App\Http\Controllers\UKF_Employee\CreateController::class, 'method']);
-Route::post('/ukf_employee/get', [\App\Http\Controllers\UKF_Employee\GetController::class, 'method']);
-Route::post('/ukf_employee/edit', [\App\Http\Controllers\UKF_Employee\EditController::class, 'method']);
-Route::post('/ukf_employee/delete', [\App\Http\Controllers\UKF_Employee\DeleteController::class, 'method']);
+/*
+  UKF Employee
+ */
+Route::post('/ukf_employee/create', [\App\Http\Controllers\UKF_Employee\CreateController::class, 'createUKF_Employee']);
+Route::get('/ukf_employee/getAllUKF_Employees', [\App\Http\Controllers\UKF_Employee\GetController::class, 'getAllUKF_Employees']);
+Route::get('/ukf_employee/{id}/get', [\App\Http\Controllers\UKF_Employee\GetController::class, 'getUKF_EmployeeById']);
+Route::get('/ukf_employee/getByEmail/{email}', [\App\Http\Controllers\UKF_Employee\GetController::class, 'getUKF_EmployeeByEmail']);
+Route::post('/ukf_employee/{id}/edit', [\App\Http\Controllers\UKF_Employee\EditController::class, 'updateUKF_Employee']);
+Route::post('/ukf_employee/{id}/delete', [\App\Http\Controllers\UKF_Employee\DeleteController::class, 'deleteUKF_Employee']);

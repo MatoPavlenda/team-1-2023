@@ -4,52 +4,21 @@ namespace App\Http\Controllers\UKF_Employee;
 
 use App\Http\Controllers\Controller;
 use App\Models\UKF_Employee;
-use App\Services\EditDbRecordService;
-use App\Services\ResponseService;
-use App\Services\ValidatorService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+
 
 class DeleteController extends Controller
 {
-    /**
-     * @var ResponseService
-     */
-    private $responseService;
 
-    /**
-     * @var ValidatorService
-     */
-    private $validationService;
-
-    /**
-     * @var EditDbRecordService
-     */
-    private $editDbRecordService;
-
-    public function __construct(
-        ResponseService $responseService,
-        ValidatorService $validationService,
-        EditDbRecordService $editDbRecordService
-    )
+    public function deleteUKF_Employee(int $id)
     {
-        $this->responseService = $responseService;
-        $this->validationService = $validationService;
-        $this->editDbRecordService = $editDbRecordService;
-    }
+        $ukf_employee = UKF_Employee::find($id);
+        if ($ukf_employee) {
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function method(Request $request)
-    {
-        $id = $request->input('id');
-
-        $company = UKF_Employee::find($id);
-
-        $company->delete();
-
-        return $this->responseService->createSuccessfulResponse();
+            // Since ukf_employee uses soft delete it will not delete from table
+            $ukf_employee->delete();
+            return response()->json(['message' => 'UKF Employee deleted successfully.'], 200);
+        } else {
+            return response()->json(['message' => 'UKF Employee not found.'], 404);
+        }
     }
 }

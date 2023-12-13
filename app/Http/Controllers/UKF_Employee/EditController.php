@@ -4,65 +4,44 @@ namespace App\Http\Controllers\UKF_Employee;
 
 use App\Http\Controllers\Controller;
 use App\Models\UKF_Employee;
-use App\Services\EditDbRecordService;
-use App\Services\ResponseService;
-use App\Services\ValidatorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class EditController extends Controller
 {
-    /**
-     * @var ResponseService
-     */
-    private $responseService;
 
-    /**
-     * @var ValidatorService
-     */
-    private $validationService;
-
-    /**
-     * @var EditDbRecordService
-     */
-    private $editDbRecordService;
-
-    public function __construct(
-        ResponseService $responseService,
-        ValidatorService $validationService,
-        EditDbRecordService $editDbRecordService
-    )
+    public function updateUKF_Employee(Request $request, $id)
     {
-        $this->responseService = $responseService;
-        $this->validationService = $validationService;
-        $this->editDbRecordService = $editDbRecordService;
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function method(Request $request)
-    {
-        $id = $request->input('id');
-        $name = $request->get('name');
-        $surname = $request->get('surname');
-        $phone = $request->get('phone');
-        $email = $request->get('email');
-        $password = $request->get('password');
-
-        $ukf_employee = UKF_Employee::find($id);
-
-        $ukf_employee = $this->editDbRecordService->editRecord($ukf_employee, [
-            ['name', $name],
-            ['surname', $surname],
-            ['phone', $phone],
-            ['email', $email],
-            ['password', $password]
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|string|max:50',
+            'surname' => 'sometimes|string|max:50',
+            'phone' => 'sometimes|string|max:10',
+            'email' => 'sometimes|string|email|max:255|unique:ukf_employee,email' .$id,
+            'password' => 'sometimes|string|max:10'
         ]);
 
-        $ukf_employee->save();
 
-        return $this->responseService->createSuccessfulResponse();
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Invalid data provided', 'errors' => $validator->errors()], 422);
+        }
+
+        // Find the student by ID
+        $ukf_employee = UKF_Employee::find($id);
+        if (!$ukf_employee) {
+            return response()->json(['message' => 'UKF Employee not found'], 404);
+        }
+
+        // Hash the password
+        $hashedPassword = Hash::make($validator->validated()['password']);
+
+        // Update the UKF_Employee with validated data and hashed password
+        $ukf_employee->update(array_merge($validator->validated(), ['password' => $hashedPassword]));
+
+        return response()->json(['message' => 'UKF Employee updated successfully.', 'ukf_employee' => $ukf_employee], 200);
+
+
+
+
     }
 }
