@@ -14,9 +14,9 @@ class EditController extends Controller
 
         // Validate the request data
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:student,email,' . $id,
+            'name' => 'sometimes|string|max:255',
+            'surname' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255|unique:student,email,' . $id,
             'study_program_id' => 'nullable|exists:study_program,id'
         ]);
 
