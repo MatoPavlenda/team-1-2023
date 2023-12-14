@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('practise_report', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('practise_id')->constrained('practise');
+            $table->foreignId('practise_id')->constrained('practice')->onDelete('cascade');
             $table->date('date');
             $table->integer('time');
             $table->text('description');
             $table->timestamps();
         });
     }
+
 //php artisan make:migration create_practise_report_table
     /**
      * Reverse the migrations.
