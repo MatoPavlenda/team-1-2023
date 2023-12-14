@@ -11,6 +11,8 @@ use App\Http\Controllers\StudyProgram;
 use App\Http\Controllers\UKF_Employee;
 use App\Http\Controllers\CompanyEmployee;
 use App\Http\Controllers\PracticeReportUpload;
+use App\Http\Controllers\StudentReview;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -162,6 +164,16 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->ukfEmployee}")->get("/practise_report/getAll", [PractiseReport\GetController::class, 'getAllPractiseReports']);
     Route::middleware("auth:{$vars->ukfEmployee}")->post("/practise_report/{id}/edit", [PractiseReport\EditController::class, 'updatePractiseReport']);
     Route::middleware("auth:{$vars->ukfEmployee}")->post("/practise_report/{id}/delete", [PractiseReport\DeleteController::class, 'deletePractiseReport']);
+
+
+    /**
+     * Student Review
+     */
+    Route::middleware("auth:{$vars->student}")->post('/student_review/create', [StudentReview\CreateController::class, 'createStudentReview']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get('/student_review/{studentId}/{ukfEmployeeId}/get', [StudentReview\GetController::class, 'getStudentReviewById']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get('/student_review/getAll', [StudentReview\GetController::class, 'getAllStudentReviews']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/student_review/{studentId}/{ukfEmployeeId}/edit', [StudentReview\EditController::class, 'updateStudentReview']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/student_review/{studentId}/{ukfEmployeeId}/delete', [StudentReview\DeleteController::class, 'deleteStudentReview']);
 
 
 });
