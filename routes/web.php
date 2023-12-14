@@ -14,6 +14,10 @@ use App\Http\Controllers\TestController;
 |
 */
 
+
+Route::get('/not-logged-in', [\App\Http\Controllers\Authentication\AuthController::class, 'unauthorized'])->name('notLoggedIn');
+Route::get('/no-permission', [\App\Http\Controllers\Authentication\AuthController::class, 'noPermission'])->name('noPermission');
+
 Route::get('/', function () {
     return view('welcome');
 });

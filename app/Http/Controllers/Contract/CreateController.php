@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class CreateController extends Controller
 {
@@ -40,6 +41,7 @@ class CreateController extends Controller
      */
     public function method(Request $request)
     {
+
         $start = $request->get('start');
         $end = $request->get('end');
         $company_id = $request->get('company_id') ?? ''; // TODO - Fix if comapny exist? - opyat sa halvonika ci treba verifikovat
