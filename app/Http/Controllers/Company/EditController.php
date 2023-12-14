@@ -9,6 +9,7 @@ use App\Services\ResponseService;
 use App\Services\ValidatorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class EditController extends Controller
 {
@@ -50,6 +51,21 @@ class EditController extends Controller
         $city = $request->input('city');
         $postal_code = $request->input('postal_code');
         $ico = $request->input('ico');
+
+
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|min:0',
+            'name' => 'sometimes|required|string|max:255',
+            'street' => 'sometimes|required|string|max:255',
+            'city' => 'sometimes|required|string|max:255',
+            'postal_code' => 'sometimes|required|string|size:5',
+            'ico' => 'sometimes|required|string|size:8',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->responseService->createErrorResponse($validator->errors());
+            //TODO create response according to some standard (roman)
+        }
 
         $company = Company::find($id);
 
