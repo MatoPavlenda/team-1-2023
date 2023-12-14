@@ -12,6 +12,7 @@ use App\Services\ValidatorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class EditController extends Controller
 {
@@ -79,9 +80,20 @@ class EditController extends Controller
             return $this->responseService->createErrorResponse('There is problem with file, try insert it again');
         }
 
-        $contract = CompanySchoolContract::find($id);
-
         // TODO - All methods verify inputs return error message? Zalezi podla toho ci budu strhavat body
+
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|min:0',
+            'start' => 'sometimes|required|date',
+            'end' => 'sometimes|required|date|after:start',
+            'company_id' => 'sometimes|nullable|integer|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            //TODO create response according to some standard (roman)
+        }
+
+        $contract = CompanySchoolContract::find($id);
 
         $contract = $this->editDbRecordService->editRecord($contract, [
             ['start', $start],

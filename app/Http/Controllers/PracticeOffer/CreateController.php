@@ -9,6 +9,7 @@ use App\Services\ResponseService;
 use App\Services\ValidatorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class CreateController extends Controller
 {
@@ -49,7 +50,7 @@ class CreateController extends Controller
         if ($companyEmployeeId == null) {
             $companyEmployeeId = 1;
         }
-
+/*
         $validationResult = $this->validationService->validateVariables(
             [
                 [
@@ -99,9 +100,19 @@ class CreateController extends Controller
                 ]
             ]
         );
+*/
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string|max:4294967295',
+            'start' => 'required|date',
+            'end' => 'required|date|after:start',
+            'student_count' => 'required|integer|min:0',
+        ]);
 
 
-        if ($validationResult === true) {
+        //if ($validationResult === true) {
+        if (!$validator->fails()) {
             $practiceOffer = new PracticeOffer();
 
             $practiceOffer->tutor_id = $companyEmployeeId;
@@ -115,7 +126,9 @@ class CreateController extends Controller
 
             return $this->responseService->createSuccessfulResponse();
         } else {
-            return $this->validationService->giveValidationResponseError($validationResult);
+            return $this->responseService->createErrorResponse($validator->errors());
+            //TODO create response according to some standard (roman)
+            //return $this->validationService->giveValidationResponseError($validationResult);
         }
     }
 }
