@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-//use Illuminate\Database\Eloquent\SoftDeletes;
-//TODO migracia na softdeletes + feedback
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Practice extends Model
 {
     use HasFactory;
-   // use SoftDeletes;
+    use SoftDeletes;
 
     protected $table = 'practice';
     protected $fillable = [
@@ -24,5 +24,4 @@ class Practice extends Model
         'active',
         'finished',
     ];
-    //s
 }

@@ -4,14 +4,21 @@ namespace App\Http\Controllers\Practice;
 
 use App\Http\Controllers\Controller;
 use App\Models\Practice;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CreateController extends Controller
 {
-//s
+    private $responseService;
+
+    public function __construct(ResponseService $responseService)
+    {
+        $this->responseService = $responseService;
+    }
     public function createPractice(Request $request)
     {
+
 
         $validator = Validator::make($request->all(), [
             'student_id' => 'required|exists:student,id',
@@ -25,12 +32,12 @@ class CreateController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => 'Invalid data provided', 'errors' => $validator->errors()], 422);
+            return $this->responseService->createInvalidDataResponse($validator->errors());
         }
 
         $validatedData = $validator->validated();
         $practice = Practice::create($validatedData);
 
-        return response()->json(['message' => 'Practice created successfully.', 'practice' => $practice], 201);
-    }
+        return $this->responseService->createSuccessfulResponse($practice);
+        }
     }

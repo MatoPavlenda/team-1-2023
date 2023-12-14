@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->date('startDate');
-            $table->date('endDate');
+            $table->date('endDate')->nullable();
             $table->boolean('active');
             $table->boolean('finished');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('student_id')->references('id')->on('student');
             $table->foreign('practice_offer_id')->references('id')->on('practice_offer');

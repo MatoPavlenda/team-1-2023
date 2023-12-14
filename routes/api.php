@@ -64,5 +64,8 @@ Route::patch('/student/{id}/edit', [Student\EditController::class, 'updateStuden
  *  Practice
  */
 Route::post('/practice/create', [Practice\CreateController::class, 'createPractice']);
-Route::post('/practice/{id}/edit', [Practice\EditController::class, 'updatePractice']);
+Route::patch('/practice/edit', [Practice\EditController::class, 'updatePractice']);
+Route::get('/practice/get', [Practice\GetController::class, 'getPracticeById']);
+Route::get('/practice/get-all', [Practice\GetController::class, 'getAllPractices']);
+Route::delete('/practice/delete', [Practice\DeleteController::class, 'deletePractice']);
 
