@@ -7,6 +7,8 @@ use App\Http\Controllers\PractiseReport;
 use App\Http\Controllers\Student;
 use App\Http\Controllers\Practice;
 use App\Http\Controllers\UKF_Employee;
+use App\Http\Controllers\StudentReview;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -82,6 +84,7 @@ Route::get('/practise-report/getAll', [PractiseReport\GetController::class, 'get
 Route::post('/practise-report/{id}/edit', [PractiseReport\EditController::class, 'updatePractiseReport']);
 Route::post('/practise-report/{id}/delete', [PractiseReport\DeleteController::class, 'deletePractiseReport']);
 
+
 /**
   UKF Employee
  */
@@ -94,6 +97,7 @@ Route::get('/ukf_employee/getByName/{name}', [\App\Http\Controllers\UKF_Employee
 Route::get('/ukf_employee/getBySurname/{surname}', [\App\Http\Controllers\UKF_Employee\GetController::class, 'getUKF_EmployeeBySurname']);
 Route::post('/ukf_employee/{id}/edit', [\App\Http\Controllers\UKF_Employee\EditController::class, 'updateUKF_Employee']);
 Route::post('/ukf_employee/{id}/delete', [\App\Http\Controllers\UKF_Employee\DeleteController::class, 'deleteUKF_Employee']);
+
 
 /**
   Company Employee
@@ -110,3 +114,13 @@ Route::get('/company_employee/getByCompanyName/{companyName}', [\App\Http\Contro
 Route::get('/company_employee/getByPosition/{position}', [\App\Http\Controllers\CompanyEmployee\GetController::class, 'getCompanyEmployeeByPosition']);
 Route::get('/company_employee/getByCompanyAndPosition/{companyName}/{position}', [\App\Http\Controllers\CompanyEmployee\GetController::class, 'getCompanyEmployeeByCompanyAndPosition']);
 Route::get('/company_employee/getAll', [\App\Http\Controllers\CompanyEmployee\GetController::class, 'getAllCompanyEmployees']);
+
+
+/**
+ *  Student Review
+ */
+Route::post('/student-review/create', [StudentReview\CreateController::class, 'createStudentReview']);
+Route::get('/student-review/{studentId}/{ukfEmployeeId}/get', [StudentReview\GetController::class, 'getStudentReviewById']);
+Route::get('/student-review/getAll', [StudentReview\GetController::class, 'getAllStudentReviews']);
+Route::post('/student-review/{studentId}/{ukfEmployeeId}/edit', [StudentReview\EditController::class, 'updateStudentReview']);
+Route::post('/student-review/{studentId}/{ukfEmployeeId}/delete', [StudentReview\DeleteController::class, 'deleteStudentReview']);
