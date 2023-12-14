@@ -4,11 +4,20 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Student;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CreateController extends Controller
 {
+
+
+    private $responseService;
+
+    public function __construct(ResponseService $responseService)
+    {
+        $this->responseService = $responseService;
+    }
 
     public function createStudent(Request $request)
     {
@@ -20,12 +29,12 @@ class CreateController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => 'Invalid data provided', 'errors' => $validator->errors()], 422);
+            return $this->responseService->createInvalidDataResponse($validator->errors());
         }
 
         $validatedData = $validator->validated();
         $student = Student::create($validatedData);
 
-        return response()->json(['message' => 'Student created successfully.', 'student' => $student], 201);
+        return $this->responseService->createSuccessfulResponse("Student created successfully");
     }
 }
