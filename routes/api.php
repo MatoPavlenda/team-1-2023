@@ -11,6 +11,7 @@ use App\Http\Controllers\StudyProgram;
 use App\Http\Controllers\UKF_Employee;
 use App\Http\Controllers\CompanyEmployee;
 use App\Http\Controllers\PracticeReportUpload;
+use App\Http\Controllers\StudentReview;
 use App\Http\Controllers\UKF_Employee_Department;
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,7 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->ukfEmployee}")->patch("/student/attachStudentToStudyProgram", [Student\EditController::class, 'attachStudentToStudyProgram']);
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->student}")->patch("/student/attachStudentToPracticeOffer", [Student\EditController::class, 'attachStudentToPracticeOffer']);
 
+
     /**
      *  Practice
      */
@@ -82,6 +84,7 @@ Route::middleware(["auth"])->group(function () {
     Route::get("/practice/get", [Practice\GetController::class, 'getPracticeById']);
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->get("/practice/get-all", [Practice\GetController::class, 'getAllPractices']);
     Route::middleware("auth:{$vars->admin}")->delete("/practice/delete", [Practice\DeleteController::class, 'deletePractice']);
+
 
     /**
      * Study Program
@@ -92,6 +95,7 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->admin}")->delete("study-program/delete", [StudyProgram\StudyProgramController::class, 'deleteStudyProgram']);
     Route::middleware("auth:{$vars->admin}")->patch("study-program/edit", [StudyProgram\StudyProgramController::class, 'editStudyProgram']);
 
+
     /**
      * Company Review
      */
@@ -100,6 +104,7 @@ Route::middleware(["auth"])->group(function () {
     Route::get("company-review/get-all", [CompanyReviewController::class, 'getAllCompanyReviews']);
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->student}")->patch("company-review/edit", [CompanyReviewController::class, 'editCompanyReview']);
     Route::middleware("auth:{$vars->admin}")->delete("company-review/delete", [CompanyReviewController::class, 'deleteCompanyReview']);
+
 
     /**
      * Company Employee
@@ -123,6 +128,7 @@ Route::middleware(["auth"])->group(function () {
     Route::get('/ukf_employee/get-by-filter', [UKF_Employee\GetController::class, 'getUKF_EmployeeByFilter']);
     Route::get('/ukf_employee/get-all-ukf_employees', [UKF_Employee\GetController::class, 'getAllUKF_Employees']);
 
+
     /**
      * Practice Report Upload
      */
@@ -135,7 +141,6 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->ukfEmployee}")->get("/practice_report_upload/get", [PracticeReportUpload\PracticeReportUploadController::class, 'getPracticeReportUploadById']);
     Route::middleware("auth:{$vars->ukfEmployee}")->get("/practice_report_upload/get-all", [PracticeReportUpload\PracticeReportUploadController::class, 'getAllPracticeReportUploads']);
     Route::middleware("auth:{$vars->ukfEmployee}")->get("/practice_report_upload/get-active", [PracticeReportUpload\PracticeReportUploadController::class, 'getActivePracticeUploads']);
-
 
 
     /**
@@ -158,6 +163,7 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->ukfEmployee}")->get('/agreement/get-by-filter', [Agreement\GetController::class, 'getAgreementByFilter']);
     Route::middleware("auth:{$vars->ukfEmployee}")->get('/agreement/get-all', [Agreement\GetController::class, 'getAllAgreements']);
 
+
     /**
      *  UKF_Employee_Department
      */
@@ -167,6 +173,7 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee},{$vars->student}")->get('/ukf_employee_department/get', [UKF_Employee_Department\GetController::class, 'getUKF_Employee_DepartmentById']);
     Route::middleware("auth:{$vars->ukfEmployee}")->get('/ukf_employee_department/get-by-filter', [UKF_Employee_Department\GetController::class, 'getUKF_Employee_DepartmentByFilter']);
     Route::middleware("auth:{$vars->ukfEmployee}")->get('/ukf_employee_department/get-all', [UKF_Employee_Department\GetController::class, 'getAllUKF_employee_Department']);
+
 
     /**
      * Practice Report
@@ -178,5 +185,14 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->ukfEmployee}")->post("/practise_report/{id}/delete", [PractiseReport\DeleteController::class, 'deletePractiseReport']);
 
 
-});
+    /**
+     * Student Review
+     */
+    Route::middleware("auth:{$vars->student}")->post('/student_review/create', [StudentReview\CreateController::class, 'createStudentReview']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get('/student_review/{studentId}/{ukfEmployeeId}/get', [StudentReview\GetController::class, 'getStudentReviewById']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get('/student_review/getAll', [StudentReview\GetController::class, 'getAllStudentReviews']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/student_review/{studentId}/{ukfEmployeeId}/edit', [StudentReview\EditController::class, 'updateStudentReview']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/student_review/{studentId}/{ukfEmployeeId}/delete', [StudentReview\DeleteController::class, 'deleteStudentReview']);
 
+
+});
