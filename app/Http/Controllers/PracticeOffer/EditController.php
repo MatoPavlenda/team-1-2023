@@ -10,6 +10,7 @@ use App\Services\ResponseService;
 use App\Services\ValidatorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class EditController extends Controller
 {
@@ -53,9 +54,25 @@ class EditController extends Controller
         $student_count = $request->get('student_count');
         $companyEmployeeId = $request->get('company_employee_id') ?? ($request->has('company_employee_id') ? -1 : null); // TODO - Fix after will work auth
 
-        $practiceOffer = PracticeOffer::find($id);
 
         // TODO - All methods verify inputs return error message? Zalezi podla toho ci budu strhavat body
+
+        $validator = Validator::make($request->all(), [ // TODO check if it will work for empty $description
+            'id' => 'required|integer|min:0',
+            'title' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|nullable|string|max:4294967295',
+            'start' => 'sometimes|required|date',
+            'end' => 'sometimes|required|date|after:start',
+            'student_count' => 'sometimes|required|integer|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            //TODO create response according to some standard (roman)
+        }
+
+        // TODO - error response if validation fails, complete also validation for $companyEmployeeId
+
+        $practiceOffer = PracticeOffer::find($id);
 
         $practiceOffer = $this->editDbRecordService->editRecord($practiceOffer, [
             ['title', $title],

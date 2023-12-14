@@ -11,6 +11,7 @@ use App\Services\ValidatorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Support\Facades\Validator;
 
 class CreateController extends Controller
 {
@@ -42,7 +43,7 @@ class CreateController extends Controller
         $start = $request->get('start');
         $end = $request->get('end');
         $company_id = $request->get('company_id') ?? ''; // TODO - Fix if comapny exist? - opyat sa halvonika ci treba verifikovat
-
+/*
         $validationResult = $this->validationService->validateVariables(
             [
                 [
@@ -87,7 +88,7 @@ class CreateController extends Controller
         if ($validationResult !== true) {
             return $this->validationService->giveValidationResponseError($validationResult);
         }
-
+*/
         try {
             // Check if a file was actually uploaded
             if ($request->hasFile('file')) {
@@ -113,6 +114,17 @@ class CreateController extends Controller
         } catch (\Exception $e) {
             return $this->responseService->createErrorResponse('There is problem with file, try insert it again');
         }
+
+        $validator = Validator::make($request->all(), [
+            'start' => 'required|date',
+            'end' => 'required|date|after:start',
+            'company_id' => 'nullable|integer|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            //TODO create response according to some standard (roman)
+        }
+
 
         $companySchoolContract = new CompanySchoolContract();
 

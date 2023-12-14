@@ -24,6 +24,14 @@ class ResponseService
         ], 200);
     }
 
+    public function createInvalidDataResponse($errors)
+    {
+        return new JsonResponse([
+            'code' => 422,
+            'data' => $errors
+        ], 422);
+    }
+
     public function createDataResponse($jsonData)
     {
         return new JsonResponse([

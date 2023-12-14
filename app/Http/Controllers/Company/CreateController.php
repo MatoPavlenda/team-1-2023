@@ -8,6 +8,7 @@ use App\Services\ResponseService;
 use App\Services\ValidatorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class CreateController extends Controller
 {
@@ -41,7 +42,7 @@ class CreateController extends Controller
         $city = $request->input('city');
         $postal_code = $request->input('postal_code');
         $ico = $request->input('ico');
-
+/*
         $validationResult = $this->validationService->validateVariables(
             [
                 [
@@ -101,8 +102,18 @@ class CreateController extends Controller
                 ]
             ]
         );
+*/
 
-        if ($validationResult === true) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'street' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'postal_code' => 'required|string|size:5',
+            'ico' => 'required|string|size:8',
+        ]);
+
+        //if ($validationResult === true) {
+        if (!$validator->fails()) {
             $company = new Company();
 
             $company->name = $name;
@@ -115,7 +126,9 @@ class CreateController extends Controller
 
             return $this->responseService->createSuccessfulResponse();
         } else {
-            return $this->validationService->giveValidationResponseError($validationResult);
+            return $this->responseService->createErrorResponse($validator->errors());
+            //TODO create response according to some standard (roman)
+            //return $this->validationService->giveValidationResponseError($validationResult);
         }
     }
 }
