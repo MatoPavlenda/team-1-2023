@@ -4,36 +4,43 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Student;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class EditController extends Controller
 {
 
-    public function updateStudent(Request $request, $id){
+    private $responseService;
 
-        // Validate the request data
+    public function __construct(ResponseService $responseService)
+    {
+        $this->responseService = $responseService;
+    }
+
+    public function updateStudent(Request $request)
+    {
+
+        $id = $request->input('id');
+
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:student,email,' . $id,
+            'id'=>'required',
+            'name' => 'sometimes|string|max:255',
+            'surname' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255|unique:student,email,' . $id,
             'study_program_id' => 'nullable|exists:study_program,id'
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => 'Invalid data provided', 'errors' => $validator->errors()], 422);
+            return $this->responseService->createInvalidDataResponse($validator->errors());
         }
 
-        // Find the student by ID
         $student = Student::find($id);
         if (!$student) {
-            return response()->json(['message' => 'Student not found'], 404);
+            return $this->responseService->createErrorResponse("Student with id " . $id . " was not found");
         }
 
-        // Update the student with validated data
         $student->update($validator->validated());
-
-        return response()->json(['message' => 'Student updated successfully.', 'student' => $student], 200);
-
+        return $this->responseService->createSuccessfulResponse("Student updated sucessfully");
     }
 }
