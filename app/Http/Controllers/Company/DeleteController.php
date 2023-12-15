@@ -48,8 +48,12 @@ class DeleteController extends Controller
 
         $company = Company::find($id);
 
-        $company->delete();
+        if ($company) {
+            $company->delete();
 
-        return $this->responseService->createSuccessfulResponse();
+            return $this->responseService->createSuccessfulResponse();
+        } else {
+            return $this->responseService->createErrorResponse();
+        }
     }
 }

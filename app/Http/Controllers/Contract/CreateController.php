@@ -41,56 +41,10 @@ class CreateController extends Controller
      */
     public function method(Request $request)
     {
-
         $start = $request->get('start');
         $end = $request->get('end');
-        $company_id = $request->get('company_id') ?? ''; // TODO - Fix if comapny exist? - opyat sa halvonika ci treba verifikovat
-/*
-        $validationResult = $this->validationService->validateVariables(
-            [
-                [
-                    'value' => $start,
-                    'name' => 'start',
-                    'requirements' => [
-                        [
-                            'type' => 'non_empty'
-                        ],
-                        [
-                            'type' => 'datetime'
-                        ]
-                    ]
-                ],
-                [
-                    'value' => $end,
-                    'name' => 'end',
-                    'requirements' => [
-                        [
-                            'type' => 'non_empty'
-                        ],
-                        [
-                            'type' => 'datetime'
-                        ]
-                    ]
-                ],
-                [
-                    'value' => $company_id,
-                    'name' => 'company_id',
-                    'requirements' => [
-                        [
-                            'type' => 'non_empty'
-                        ],
-                        [
-                            'type' => 'digit'
-                        ]
-                    ]
-                ]
-            ]
-        );
+        $company_id = $request->get('company_id') ?? '';
 
-        if ($validationResult !== true) {
-            return $this->validationService->giveValidationResponseError($validationResult);
-        }
-*/
         try {
             // Check if a file was actually uploaded
             if ($request->hasFile('file')) {
@@ -120,13 +74,12 @@ class CreateController extends Controller
         $validator = Validator::make($request->all(), [
             'start' => 'required|date',
             'end' => 'required|date|after:start',
-            'company_id' => 'nullable|integer|min:0',
+            'company_id' => 'required|integer|min:0|exists:company,id',
         ]);
 
         if ($validator->fails()) {
-            //TODO create response according to some standard (roman)
+            return $this->responseService->createInvalidDataResponse($validator->errors());
         }
-
 
         $companySchoolContract = new CompanySchoolContract();
 
