@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Student;
 use App\Http\Controllers\Practice;
+use App\Http\Controllers\StudyProgram;
 
 
 /*
@@ -75,5 +76,9 @@ Route::middleware(["auth"])->group(function () {
     Route::get('/practice/get-all', [Practice\GetController::class, 'getAllPractices']);
     Route::delete('/practice/delete', [Practice\DeleteController::class, 'deletePractice']);
 
+
+
 });
+
+Route::post("study-program/create", [StudyProgram\StudyProgramController::class, 'createStudyProgram']);
 
