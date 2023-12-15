@@ -4,24 +4,30 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Student;
+use App\Services\ResponseService;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class DeleteController extends Controller
 {
 
-    public function deleteStudent(int $id)
+    private $responseService;
+
+    public function __construct(ResponseService $responseService)
     {
-
-        $student = Student::find($id);
-        if ($student) {
-
-
-            // Since student uses soft delete it will not delete from table
-            $student->delete();
-            return response()->json(['message' => 'Student deleted successfully.'], 200);
-        } else {
-            return response()->json(['message' => 'Student not found.'], 404);
-        }
+        $this->responseService = $responseService;
     }
 
-
+    public function deleteStudent(Request $request)
+    {
+        $id = $request->input('id');
+        $student = Student::find($id);
+        if ($student)
+        {
+            $student->delete();
+            return $this->responseService->createSuccessfulResponse("Student with id ".$id." deleted successfully");
+        } else {
+            return $this->responseService->createErrorResponse("Student not found");
+        }
+    }
 }

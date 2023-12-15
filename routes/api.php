@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Student;
+use App\Http\Controllers\Practice;
 
 
 /*
@@ -58,10 +59,21 @@ Route::middleware(["auth"])->group(function () {
     /**
      *  Student
      */
-    Route::get('/student/{id}/get/', [Student\GetController::class, 'getStudentById']);
-    Route::get('/student/getByEmail/{email}', [Student\GetController::class, 'getStudentByEmail']);
-    Route::get('/student/getAllStudents', [Student\GetController::class, 'getAllStudents']);
-    Route::post('/student/create', [Student\CreateController::class, 'createStudent']);
-    Route::post('/student/{id}/delete/', [Student\DeleteController::class, 'deleteStudent']);
-    Route::patch('/student/{id}/edit', [Student\EditController::class, 'updateStudent']);
+    Route::get("/student/get/", [Student\GetController::class, 'getStudentById']);
+    Route::get("/student/get-by-email", [Student\GetController::class, 'getStudentByEmail']);
+    Route::get("/student/get-all-students", [Student\GetController::class, 'getAllStudents']);
+    Route::post("/student/create", [Student\CreateController::class, 'createStudent']);
+    Route::post("/student/delete/", [Student\DeleteController::class, 'deleteStudent']);
+    Route::patch("/student/edit", [Student\EditController::class, 'updateStudent']);
+
+    /**
+     *  Practice
+     */
+    Route::post('/practice/create', [Practice\CreateController::class, 'createPractice']);
+    Route::patch('/practice/edit', [Practice\EditController::class, 'updatePractice']);
+    Route::get('/practice/get', [Practice\GetController::class, 'getPracticeById']);
+    Route::get('/practice/get-all', [Practice\GetController::class, 'getAllPractices']);
+    Route::delete('/practice/delete', [Practice\DeleteController::class, 'deletePractice']);
+
 });
+
