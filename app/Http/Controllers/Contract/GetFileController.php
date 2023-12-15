@@ -41,6 +41,10 @@ class GetFileController extends Controller
 
         $contract = CompanySchoolContract::find($id);
 
+        if (!$contract) {
+            return $this->responseService->createErrorResponse();
+        }
+
         $projectDir = base_path();
         $targetDirectory = $projectDir . '/storage/company-school-contract/';
 

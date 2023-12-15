@@ -51,7 +51,8 @@ class EditController extends Controller
         $id = $request->input('id');
         $start = $request->get('start');
         $end = $request->get('end');
-        $companyId = $request->get('company_id') ?? ($request->has('company_id') ? -1 : null); // TODO - Fix if comapny exist? - opyat sa halvonika ci treba verifikovat
+        //$companyId = $request->get('company_id') ?? ($request->has('company_id') ? -1 : null);
+        $companyId = $request->get('company_id');
 
         $filename = null;
 
@@ -80,17 +81,24 @@ class EditController extends Controller
             return $this->responseService->createErrorResponse('There is problem with file, try insert it again');
         }
 
-        // TODO - All methods verify inputs return error message? Zalezi podla toho ci budu strhavat body
-
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|integer|min:0',
-            'start' => 'sometimes|required|date',
-            'end' => 'sometimes|required|date|after:start',
-            'company_id' => 'sometimes|nullable|integer|min:0',
-        ]);
+        //if ($companyId == -1 || $companyId == null) {
+        if ($companyId == null) {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|integer|min:0',
+                'start' => 'sometimes|required|date',
+                'end' => 'sometimes|required|date|after:start',
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|integer|min:0',
+                'start' => 'sometimes|required|date',
+                'end' => 'sometimes|required|date|after:start',
+                'company_id' => 'required|nullable|integer|min:0|exists:company,id',
+            ]);
+        }
 
         if ($validator->fails()) {
-            //TODO create response according to some standard (roman)
+            return $this->responseService->createInvalidDataResponse($validator->errors());
         }
 
         $contract = CompanySchoolContract::find($id);

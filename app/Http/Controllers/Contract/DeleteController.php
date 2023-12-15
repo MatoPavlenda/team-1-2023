@@ -49,8 +49,12 @@ class DeleteController extends Controller
 
         $contract = CompanySchoolContract::find($id);
 
-        $contract->delete();
+        if ($contract) {
+            $contract->delete();
 
-        return $this->responseService->createSuccessfulResponse();
+            return $this->responseService->createSuccessfulResponse();
+        } else {
+            return $this->responseService->createErrorResponse();
+        }
     }
 }

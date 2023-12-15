@@ -41,6 +41,11 @@ class GetController extends Controller
 
         if ($id !== '') {
             $contract = CompanySchoolContract::with('company')->find($id);
+
+            if (!$contract) {
+                return $this->responseService->createErrorResponse();
+            }
+
             return $this->responseService->createDataResponse($contract);
         } else {
             $contracts = CompanySchoolContract::with('company')->get();

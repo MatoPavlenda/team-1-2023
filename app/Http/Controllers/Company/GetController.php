@@ -40,6 +40,11 @@ class GetController extends Controller
 
         if ($id !== '') {
             $company = Company::with('contracts')->find($id);
+
+            if (!$company) {
+                return $this->responseService->createErrorResponse();
+            }
+
             return $this->responseService->createDataResponse($company);
         } else {
             $companies = Company::with('contracts')->get();
