@@ -42,6 +42,10 @@ class GetController extends Controller
         if ($id !== '') {
             $practiceOffer = PracticeOffer::with('tutor.company')->find($id);
 
+            if (!$practiceOffer) {
+                return $this->responseService->createErrorResponse();
+            }
+
             return $this->responseService->createDataResponse($practiceOffer);
         } else {
             $practiceOffers = PracticeOffer::with('tutor.company')->get();

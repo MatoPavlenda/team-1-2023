@@ -42,67 +42,6 @@ class CreateController extends Controller
         $city = $request->input('city');
         $postal_code = $request->input('postal_code');
         $ico = $request->input('ico');
-/*
-        $validationResult = $this->validationService->validateVariables(
-            [
-                [
-                    'value' => $name,
-                    'name' => 'name',
-                    'requirements' => [
-                        [
-                            'type' => 'non_empty'
-                        ]
-                    ]
-                ],
-                [
-                    'value' => $street,
-                    'name' => 'street',
-                    'requirements' => [
-                        [
-                            'type' => 'non_empty'
-                        ]
-                    ]
-                ],
-                [
-                    'value' => $city,
-                    'name' => 'city',
-                    'requirements' => [
-                        [
-                            'type' => 'non_empty'
-                        ]
-                    ]
-                ],
-                [
-                    'value' => $postal_code,
-                    'name' => 'postal_code',
-                    'requirements' => [
-                        [
-                            'type' => 'non_empty'
-                        ],
-                        [
-                            'type' => 'postal'
-                        ]
-                    ]
-                ],
-                [
-                    'value' => $ico,
-                    'name' => 'ico',
-                    'requirements' => [
-                        [
-                            'type' => 'non_empty'
-                        ],
-                        [
-                            'type' => 'digits'
-                        ],
-                        [
-                            'type' => 'length',
-                            'value' => '8'
-                        ]
-                    ]
-                ]
-            ]
-        );
-*/
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -126,9 +65,7 @@ class CreateController extends Controller
 
             return $this->responseService->createSuccessfulResponse();
         } else {
-            return $this->responseService->createErrorResponse($validator->errors());
-            //TODO create response according to some standard (roman)
-            //return $this->validationService->giveValidationResponseError($validationResult);
+            return $this->responseService->createInvalidDataResponse($validator->errors());
         }
     }
 }

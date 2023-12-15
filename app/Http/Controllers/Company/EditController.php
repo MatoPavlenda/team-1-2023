@@ -63,11 +63,19 @@ class EditController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->responseService->createErrorResponse($validator->errors());
-            //TODO create response according to some standard (roman)
+            return $this->responseService->createInvalidDataResponse($validator->errors());
         }
 
         $company = Company::find($id);
+
+        if (!$company) {
+            return $this->responseService->createErrorResponse();
+        }
+
+        /*
+         * TODO - If company employee use role is editing, check if this employee is under this company
+         * TODO - Variation 2, add to comapny employee value admin, and only admin can edit company info
+         */
 
         $company = $this->editDbRecordService->editRecord($company, [
             ['name', $name],

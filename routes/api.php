@@ -65,15 +65,15 @@ Route::middleware(["auth"])->group(function () {
     Route::post("/student/create", [Student\CreateController::class, 'createStudent']);
     Route::post("/student/delete/", [Student\DeleteController::class, 'deleteStudent']);
     Route::patch("/student/edit", [Student\EditController::class, 'updateStudent']);
+
+    /**
+     *  Practice
+     */
+    Route::post('/practice/create', [Practice\CreateController::class, 'createPractice']);
+    Route::patch('/practice/edit', [Practice\EditController::class, 'updatePractice']);
+    Route::get('/practice/get', [Practice\GetController::class, 'getPracticeById']);
+    Route::get('/practice/get-all', [Practice\GetController::class, 'getAllPractices']);
+    Route::delete('/practice/delete', [Practice\DeleteController::class, 'deletePractice']);
+
 });
-
-
-/**
- *  Practice
- */
-Route::post('/practice/create', [Practice\CreateController::class, 'createPractice']);
-Route::patch('/practice/edit', [Practice\EditController::class, 'updatePractice']);
-Route::get('/practice/get', [Practice\GetController::class, 'getPracticeById']);
-Route::get('/practice/get-all', [Practice\GetController::class, 'getAllPractices']);
-Route::delete('/practice/delete', [Practice\DeleteController::class, 'deletePractice']);
 

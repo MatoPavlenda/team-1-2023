@@ -4,9 +4,11 @@ namespace App\Http\Controllers\PracticeOffer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\CompanyEmployee;
 use App\Models\PracticeOffer;
 use App\Services\ResponseService;
 use App\Services\ValidatorService;
+use App\Variables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -43,76 +45,46 @@ class CreateController extends Controller
         $start = $request->get('start');
         $end = $request->get('end');
         $student_count = $request->get('student_count');
-        $companyEmployeeId = $request->get('company_employee_id') ?? ''; // TODO - Fix after will work auth
+        $companyEmployeeId = $request->get('company_employee_id');
 
-        // TODO - If not specified by header, add actual employee? If employee do not even take header value
-        // TODO - Check if employee exist?
-        if ($companyEmployeeId == null) {
-            $companyEmployeeId = 1;
+        $vars = new Variables();
+        $user = auth()->user();
+
+        if ($user->role == $vars->companyEmployee && $companyEmployeeId == null) {
+            $companyEmployeeId = $user->companyEmployee->id;
+
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string|max:4294967295',
+                'start' => 'required|date',
+                'end' => 'required|date|after:start',
+                'student_count' => 'required|integer|min:0',
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string|max:4294967295',
+                'start' => 'required|date',
+                'end' => 'required|date|after:start',
+                'student_count' => 'required|integer|min:0',
+                'company_employee_id' => 'required|integer|min:0|exists:company_employee,id',
+            ]);
         }
-/*
-        $validationResult = $this->validationService->validateVariables(
-            [
-                [
-                    'value' => $title,
-                    'name' => 'title',
-                    'requirements' => [
-                        [
-                            'type' => 'non_empty'
-                        ]
-                    ]
-                ],
-                [
-                    'value' => $start,
-                    'name' => 'start',
-                    'requirements' => [
-                        [
-                            'type' => 'non_empty'
-                        ],
-                        [
-                            'type' => 'datetime'
-                        ]
-                    ]
-                ],
-                [
-                    'value' => $end,
-                    'name' => 'end',
-                    'requirements' => [
-                        [
-                            'type' => 'non_empty'
-                        ],
-                        [
-                            'type' => 'datetime'
-                        ]
-                    ]
-                ],
-                [
-                    'value' => $student_count, // TODO - check if negative and zero
-                    'name' => 'student_count',
-                    'requirements' => [
-                        [
-                            'type' => 'non_empty'
-                        ],
-                        [
-                            'type' => 'digits'
-                        ]
-                    ]
-                ]
-            ]
-        );
-*/
 
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:4294967295',
-            'start' => 'required|date',
-            'end' => 'required|date|after:start',
-            'student_count' => 'required|integer|min:0',
-        ]);
+        if ($validator->fails()) {
+            return $this->responseService->createInvalidDataResponse($validator->errors());
+        }
 
+        if ($user->role == $vars->companyEmployee) {
+            $companyEmployeeDb = CompanyEmployee::find($companyEmployeeId);
+
+            if ($companyEmployeeDb->company->id != $user->companyEmployee->company->id) {
+                return $this->responseService->createNoPermisionResponse("You can not create practice offer with tutor (company employee) from other company");
+            }
+        }
 
         //if ($validationResult === true) {
-        if (!$validator->fails()) {
+        //if (!$validator->fails()) {
             $practiceOffer = new PracticeOffer();
 
             $practiceOffer->tutor_id = $companyEmployeeId;
@@ -125,10 +97,8 @@ class CreateController extends Controller
             $practiceOffer->save();
 
             return $this->responseService->createSuccessfulResponse();
-        } else {
-            return $this->responseService->createErrorResponse($validator->errors());
-            //TODO create response according to some standard (roman)
-            //return $this->validationService->giveValidationResponseError($validationResult);
-        }
+//        } else {
+//            return $this->responseService->createInvalidDataResponse($validator->errors());
+//        }
     }
 }

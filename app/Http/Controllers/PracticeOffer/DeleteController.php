@@ -50,8 +50,12 @@ class DeleteController extends Controller
 
         $practiceOffer = PracticeOffer::find($id);
 
-        $practiceOffer->delete();
+        if ($practiceOffer) {
+            $practiceOffer->delete();
 
-        return $this->responseService->createSuccessfulResponse();
+            return $this->responseService->createSuccessfulResponse();
+        } else {
+            return $this->responseService->createErrorResponse();
+        }
     }
 }
