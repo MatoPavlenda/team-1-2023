@@ -36,9 +36,32 @@ class StudyProgramController extends Controller
         return $this->responseService->createSuccessfulResponse("Study program created successfully");
     }
 
+    public function getStudyProgram(Request $request)
+    {
+        $id = $request->input('id');
+        $studyProgram = StudyProgram::find($id);
+        if ($studyProgram) {
+            return $this->responseService->createDataResponse($studyProgram);
+        } else {
+            return $this->responseService->createErrorResponse("Study program not found");
+        }
+    }
 
+    public function getAllStudyPrograms()
+    {
+        $studyPrograms = StudyProgram::all();
+        return $this->responseService->createDataResponse($studyPrograms);
+    }
 
-
-
-
+    public function deleteStudyProgram(Request $request)
+    {
+        $id = $request->input('id');
+        $studyProgram = StudyProgram::find($id);
+        if ($studyProgram) {
+            $studyProgram->delete();
+            return $this->responseService->createSuccessfulResponse("Study program deleted successfully");
+        } else {
+            return $this->responseService->createErrorResponse("Study program not found");
+        }
+    }
 }
