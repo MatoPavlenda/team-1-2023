@@ -6,12 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\CompanyEmployee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Services\ResponseService;
 
 class EditController extends Controller
 {
+    private $responseService;
 
-    public function updateCompanyEmployee(Request $request, $id)
+    public function __construct(ResponseService $responseService)
     {
+        $this->responseService = $responseService;
+    }
+
+    public function updateCompanyEmployee(Request $request)
+    {
+        $id = $request->input('id');
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:50',
             'surname' => 'sometimes|string|max:50',
@@ -21,18 +29,18 @@ class EditController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => 'Invalid data provided', 'errors' => $validator->errors()], 422);
+            return $this->responseService->createInvalidDataResponse($validator->errors());
         }
 
         // Find the CompanyEmployee by ID
         $company_employee = CompanyEmployee::find($id);
         if (!$company_employee) {
-            return response()->json(['message' => 'CompanyEmployee not found'], 404);
+            return $this->responseService->createErrorResponse("Company Employee with id " .$id . " not found.");
         }
 
         // Update the CompanyEmployee with validated data
         $company_employee->update($validator->validated());
 
-        return response()->json(['message' => 'Company employee updated successfully.', 'company_employee' => $company_employee], 200);
+        return $this->responseService->createSuccessfulResponse("Company Employee updated successfully");
     }
 }

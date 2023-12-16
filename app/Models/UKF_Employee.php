@@ -14,9 +14,6 @@ class UKF_Employee extends Model
     protected $fillable = [
         'name',
         'surname',
-        'phone',
-        'email',
-        'password',
     ];
 
     protected $table = 'ukf_employee';

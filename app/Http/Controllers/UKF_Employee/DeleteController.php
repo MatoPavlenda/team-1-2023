@@ -4,21 +4,28 @@ namespace App\Http\Controllers\UKF_Employee;
 
 use App\Http\Controllers\Controller;
 use App\Models\UKF_Employee;
+use App\Services\ResponseService;
+use Illuminate\Http\Request;
 
 
 class DeleteController extends Controller
 {
+    private $responseService;
 
-    public function deleteUKF_Employee(int $id)
+    public function __construct(ResponseService $responseService)
     {
+        $this->responseService = $responseService;
+    }
+
+    public function deleteUKF_Employee(Request $request)
+    {
+        $id = $request->input('id');
         $ukf_employee = UKF_Employee::find($id);
         if ($ukf_employee) {
-
-            // Since ukf_employee uses soft delete it will not delete from table
             $ukf_employee->delete();
-            return response()->json(['message' => 'UKF Employee deleted successfully.'], 200);
+            return $this->responseService->createSuccessfulResponse("UKF Employee with id " . $id . " deleted");
         } else {
-            return response()->json(['message' => 'UKF Employee not found.'], 404);
+            return $this->responseService->createErrorResponse("id " .$id." not found");
         }
     }
 }
