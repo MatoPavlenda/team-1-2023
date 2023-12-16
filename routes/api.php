@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Student;
 use App\Http\Controllers\Practice;
 use App\Http\Controllers\StudyProgram;
-
-
+use App\Http\Controllers\UKF_Employee;
+use App\Http\Controllers\CompanyEmployee;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -85,4 +85,34 @@ Route::get("study-program/get", [StudyProgram\StudyProgramController::class, 'ge
 Route::get("study-program/get-all", [StudyProgram\StudyProgramController::class, 'getAllStudyPrograms']);
 Route::delete("study-program/delete", [StudyProgram\StudyProgramController::class, 'deleteStudyProgram']);
 Route::patch("study-program/patch", [StudyProgram\StudyProgramController::class, 'editStudyProgram']);
+
+
+
+/**
+ *  UKF Employee
+ */
+Route::post('/ukf_employee/create', [UKF_Employee\CreateController::class, 'createUKF_Employee']);
+Route::post('/ukf_employee/edit', [UKF_Employee\EditController::class, 'updateUKF_Employee']);
+Route::post('/ukf_employee/delete', [UKF_Employee\DeleteController::class, 'deleteUKF_Employee']);
+Route::get('/ukf_employee/get', [UKF_Employee\GetController::class, 'getUKF_EmployeeById']);
+Route::get('/ukf_employee/get-by-name', [UKF_Employee\GetController::class, 'getUKF_EmployeeByName']);
+Route::get('/ukf_employee/get-by-surname', [UKF_Employee\GetController::class, 'getUKF_EmployeeBySurname']);
+Route::get('/ukf_employee/get-by-fullname', [UKF_Employee\GetController::class, 'getUKF_EmployeeByFullName']);
+Route::get('/ukf_employee/get-all-ukf_employees', [UKF_Employee\GetController::class, 'getAllUKF_Employees']);
+
+/**
+ *  Company Employee
+ */
+Route::post('/company_employee/create', [CompanyEmployee\CreateController::class, 'createCompanyEmployee']);
+Route::post('/company_employee/edit', [CompanyEmployee\EditController::class, 'updateCompanyEmployee']);
+Route::post('/company_employee/delete', [CompanyEmployee\DeleteController::class, 'deleteCompanyEmployee']);
+Route::get('/company_employee/get', [CompanyEmployee\GetController::class, 'getCompanyEmployeeById']);
+Route::get('/company_employee/get-by-name', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByName']);
+Route::get('/company_employee/get-by-surname', [CompanyEmployee\GetController::class, 'getCompanyEmployeeBySurname']);
+Route::get('/company_employee/get-by-fullname', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByFullName']);
+Route::get('/company_employee/get-all-ukf_employees', [CompanyEmployee\GetController::class, 'getAllCompanyEmployees']);
+Route::get('/company_employee/get-by-position', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByPosition']);
+Route::get('/company_employee/get-by-email', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByEmail']);
+Route::get('/company_employee/get-by-company_name', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByCompanyName']);
+Route::get('/company_employee/get-by-company_name_and_position', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByCompanyAndPosition']);
 
