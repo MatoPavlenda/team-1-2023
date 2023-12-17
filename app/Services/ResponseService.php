@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\File;
 
 class ResponseService
 {
+    public function createNoPermisionResponse($message = 'You do not have permissions')
+    {
+        return new JsonResponse([
+            'code' => 403,
+            'message' => $message
+        ], 403);
+    }
+
     public function createUnauthorizedResponse($message = 'Unauthorized')
     {
         return new JsonResponse([
@@ -22,6 +30,14 @@ class ResponseService
             'code' => 200,
             'message' => $message
         ], 200);
+    }
+
+    public function createInvalidDataResponse($errors)
+    {
+        return new JsonResponse([
+            'code' => 422,
+            'data' => $errors
+        ], 422);
     }
 
     public function createDataResponse($jsonData)
