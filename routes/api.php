@@ -67,6 +67,7 @@ Route::middleware(["auth"])->group(function () {
     Route::post("/student/delete/", [Student\DeleteController::class, 'deleteStudent']);
     Route::patch("/student/edit", [Student\EditController::class, 'updateStudent']);
 
+
     /**
      *  Practice
      */
@@ -77,12 +78,12 @@ Route::middleware(["auth"])->group(function () {
     Route::delete('/practice/delete', [Practice\DeleteController::class, 'deletePractice']);
 
 
-
+    /**
+     * Study Program
+     */
+    Route::middleware("auth:{$vars->admin}")->post("study-program/create", [StudyProgram\StudyProgramController::class, 'createStudyProgram']);
+    Route::get("study-program/get", [StudyProgram\StudyProgramController::class, 'getStudyProgram']);
+    Route::get("study-program/get-all", [StudyProgram\StudyProgramController::class, 'getAllStudyPrograms']);
+    Route::middleware("auth:{$vars->admin}")->delete("study-program/delete", [StudyProgram\StudyProgramController::class, 'deleteStudyProgram']);
+    Route::middleware("auth:{$vars->admin}")->patch("study-program/patch", [StudyProgram\StudyProgramController::class, 'editStudyProgram']);
 });
-
-Route::post("study-program/create", [StudyProgram\StudyProgramController::class, 'createStudyProgram']);
-Route::get("study-program/get", [StudyProgram\StudyProgramController::class, 'getStudyProgram']);
-Route::get("study-program/get-all", [StudyProgram\StudyProgramController::class, 'getAllStudyPrograms']);
-Route::delete("study-program/delete", [StudyProgram\StudyProgramController::class, 'deleteStudyProgram']);
-Route::patch("study-program/patch", [StudyProgram\StudyProgramController::class, 'editStudyProgram']);
-
