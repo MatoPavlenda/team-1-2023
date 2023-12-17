@@ -62,20 +62,20 @@ Route::middleware(["auth"])->group(function () {
      */
     Route::get("/student/get/", [Student\GetController::class, 'getStudentById']);
     Route::get("/student/get-by-email", [Student\GetController::class, 'getStudentByEmail']);
-    Route::get("/student/get-all-students", [Student\GetController::class, 'getAllStudents']);
-    Route::post("/student/create", [Student\CreateController::class, 'createStudent']);
-    Route::post("/student/delete/", [Student\DeleteController::class, 'deleteStudent']);
-    Route::patch("/student/edit", [Student\EditController::class, 'updateStudent']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get("/student/get-all-students", [Student\GetController::class, 'getAllStudents']);
+    //TODO spytat sa ze ako creatnut studenta - ci to nespravi login
+    Route::middleware("auth:{$vars->admin}")->post("/student/create", [Student\CreateController::class, 'createStudent']);
+    Route::middleware("auth:{$vars->admin}")->post("/student/delete/", [Student\DeleteController::class, 'deleteStudent']);
+    Route::middleware("auth:{$vars->admin}")->patch("/student/edit", [Student\EditController::class, 'updateStudent']);
 
     /**
      *  Practice
      */
-    Route::post('/practice/create', [Practice\CreateController::class, 'createPractice']);
-    Route::patch('/practice/edit', [Practice\EditController::class, 'updatePractice']);
-    Route::get('/practice/get', [Practice\GetController::class, 'getPracticeById']);
-    Route::get('/practice/get-all', [Practice\GetController::class, 'getAllPractices']);
-    Route::delete('/practice/delete', [Practice\DeleteController::class, 'deletePractice']);
-
+    Route::post("/practice/create", [Practice\CreateController::class, 'createPractice']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->patch("/practice/edit", [Practice\EditController::class, 'updatePractice']);
+    Route::get("/practice/get", [Practice\GetController::class, 'getPracticeById']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->get("/practice/get-all", [Practice\GetController::class, 'getAllPractices']);
+    Route::middleware("auth:{$vars->admin}")->delete("/practice/delete", [Practice\DeleteController::class, 'deletePractice']);
 
 
 });
