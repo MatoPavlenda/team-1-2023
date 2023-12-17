@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Student;
+use App\Http\Controllers\Agreement;
 use App\Http\Controllers\Practice;
 use App\Http\Controllers\StudyProgram;
 
@@ -96,3 +97,22 @@ Route::get('/department/getAll', [\App\Http\Controllers\Department\GetController
 Route::get('/department/{id}/get', [\App\Http\Controllers\Department\GetController::class, 'getDepartmentById']);
 Route::post('/department/{id}/edit', [\App\Http\Controllers\Department\EditController::class, 'updateDepartment']);
 Route::post('/department/{id}/delete', [\App\Http\Controllers\Department\DeleteController::class, 'deleteDepartment']);
+
+/*
+ * Agreement
+ */
+Route::post('/department/create', [\App\Http\Controllers\Department\CreateController::class, 'createDepartment']);
+Route::get('/department/getAll', [\App\Http\Controllers\Department\GetController::class, 'getAllDepartments']);
+Route::get('/department/{id}/get', [\App\Http\Controllers\Department\GetController::class, 'getDepartmentById']);
+Route::post('/department/{id}/edit', [\App\Http\Controllers\Department\EditController::class, 'updateDepartment']);
+Route::post('/department/{id}/delete', [\App\Http\Controllers\Department\DeleteController::class, 'deleteDepartment']);
+
+/**
+ *  Agreement
+ */
+Route::post('/agreement/create', [Agreement\CreateController::class, 'createAgreement']);
+Route::post('/agreement/edit', [Agreement\EditController::class, 'updateAgreement']);
+Route::post('/agreement/delete', [Agreement\DeleteController::class, 'deleteAgreement']);
+Route::get('/agreement/get', [Agreement\GetController::class, 'getAgreement']);
+
+
