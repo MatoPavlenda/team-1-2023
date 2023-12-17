@@ -18,5 +18,8 @@ class StudyProgram extends Model
         'program_code'
     ];
 
-
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'student_study_program');
+    }
 }

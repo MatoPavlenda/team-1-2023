@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::table('company_employee', function (Blueprint $table) {
             Schema::table('company_employee', function (Blueprint $table) {
-                $table->string('email')->unique()->after('surname'); // Add email column
-                $table->softDeletes(); // Add softDelete
+                $table->string('email')->unique()->after('surname');
             });
         });
     }
@@ -26,8 +25,7 @@ return new class extends Migration
     {
         Schema::table('company_employee', function (Blueprint $table) {
             Schema::table('company_employee', function (Blueprint $table) {
-                $table->dropColumn('email'); // Remove email column
-                $table->dropSoftDeletes(); // Remove softDeletes
+                $table->dropColumn('email');
             });
         });
     }
