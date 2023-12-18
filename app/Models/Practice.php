@@ -23,4 +23,14 @@ class Practice extends Model
         'active',
         'finished',
     ];
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id');
+    }
+
+    public function practiceOffer()
+    {
+        return $this->belongsTo(PracticeOffer::class, 'practice_offer_id');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CompanyReview;
 use App\Http\Controllers\Controller;
 use App\Models\CompanyReview;
 use App\Services\ResponseService;
+use App\Variables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -68,6 +69,21 @@ class CompanyReviewController extends Controller
     public function editCompanyReview(Request $request)
     {
         $id = $request->input('id');
+
+        $vars = new Variables();
+        $user = auth()->user();
+
+        if($user->role==$vars->student) {
+            $student = $user->student;
+            if (!$student) {
+                return $this->responseService->createErrorResponse("Student record not found");
+            }
+
+            $companyReview = $student->companyReviews->find($id);
+            if (!$companyReview) {
+                return $this->responseService->createUnauthorizedResponse("Unauthorized to change your review thats not yours");
+            }
+        }
 
         $validator = Validator::make($request->all(), [
             'id' => 'required',
