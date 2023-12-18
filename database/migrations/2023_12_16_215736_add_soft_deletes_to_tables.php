@@ -15,9 +15,9 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-//        Schema::table('company_employee', function (Blueprint $table) {
-//            $table->softDeletes();
-//        });
+        Schema::table('company_employee', function (Blueprint $table) {
+            $table->softDeletes();
+        });
 
         Schema::table('practice_offer', function (Blueprint $table) {
             $table->softDeletes();
@@ -33,9 +33,9 @@ return new class extends Migration
             $table->dropSoftDeletes();
         });
 
-//        Schema::table('company_employee', function (Blueprint $table) {
-//            $table->dropSoftDeletes();
-//        });
+        Schema::table('company_employee', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
 
         Schema::table('practice_offer', function (Blueprint $table) {
             $table->dropSoftDeletes();
