@@ -9,6 +9,7 @@ use App\Http\Controllers\Practice;
 use App\Http\Controllers\StudyProgram;
 use App\Http\Controllers\UKF_Employee;
 use App\Http\Controllers\CompanyEmployee;
+use App\Http\Controllers\PracticeReportUpload;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -96,6 +97,41 @@ Route::middleware(["auth"])->group(function () {
     Route::get("company-review/get-all", [CompanyReviewController::class, 'getAllCompanyReviews']);
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->student}")->patch("company-review/edit", [CompanyReviewController::class, 'editCompanyReview']);
     Route::middleware("auth:{$vars->admin}")->delete("company-review/delete", [CompanyReviewController::class, 'deleteCompanyReview']);
+
+    /**
+     * Company Employee
+     */
+    Route::middleware("auth:{$vars->student}")->post("/company_employee/create", [CompanyEmployee\CreateController::class, 'createCompanyEmployee']);
+    Route::middleware("auth:{$vars->admin}")->post("/company_employee/create", [CompanyEmployee\CreateController::class, 'createCompanyEmployee']);
+    Route::middleware("auth:{$vars->admin}")->patch("/company_employee/edit", [CompanyEmployee\CreateController::class, 'updateCompanyEmployee']);
+    Route::middleware("auth:{$vars->admin}")->delete("/company_employee/delete", [CompanyEmployee\CreateController::class, 'deleteCompanyEmployee']);
+    Route::get('/company_employee/get', [CompanyEmployee\GetController::class, 'getCompanyEmployeeById']);
+    Route::get('/company_employee/get-by-filter', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByFilter']);
+    Route::get('/company_employee/get-all-ukf_employees', [CompanyEmployee\GetController::class, 'getAllCompanyEmployees']);
+
+
+    /**
+     * UKF Employee
+     */
+    Route::middleware("auth:{$vars->admin}")->post("/ukf_employee/create", [UKF_Employee\CreateController::class, 'createUKF_Employee']);
+    Route::middleware("auth:{$vars->admin}")->patch("/ukf_employee/edit", [UKF_Employee\CreateController::class, 'updateUKF_Employee']);
+    Route::middleware("auth:{$vars->admin}")->delete("/ukf_employee/delete", [UKF_Employee\DeleteController::class, 'deleteUKF_Employee']);
+    Route::get('/ukf_employee/get', [UKF_Employee\GetController::class, 'getUKF_EmployeeById']);
+    Route::get('/ukf_employee/get-by-filter', [UKF_Employee\GetController::class, 'getUKF_EmployeeByFilter']);
+    Route::get('/ukf_employee/get-all-ukf_employees', [UKF_Employee\GetController::class, 'getAllUKF_Employees']);
+
+    /**
+     * Practice Report Upload
+     */
+    Route::middleware("auth:{$vars->student}")->post("/practice_report_upload/create", [PracticeReportUpload\PracticeReportUploadController::class, 'createPracticeReportUpload']);
+    Route::middleware("auth:{$vars->student}")->patch("/practice_report_upload/edit", [PracticeReportUpload\PracticeReportUploadController::class, 'editPracticeReportUpload']);
+    Route::middleware("auth:{$vars->student}")->delete("/practice_report_upload/delete", [PracticeReportUpload\PracticeReportUploadController::class, 'deletePracticeReportUpload']);
+    Route::middleware("auth:{$vars->admin}")->post("/practice_report_upload/create", [PracticeReportUpload\PracticeReportUploadController::class, 'createPracticeReportUpload']);
+    Route::middleware("auth:{$vars->admin}")->patch("/practice_report_upload/edit", [PracticeReportUpload\PracticeReportUploadController::class, 'editPracticeReportUpload']);
+    Route::middleware("auth:{$vars->admin}")->delete("/practice_report_upload/delete", [PracticeReportUpload\PracticeReportUploadController::class, 'deletePracticeReportUpload']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get("/practice_report_upload/get", [PracticeReportUpload\PracticeReportUploadController::class, 'getPracticeReportUploadById']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get("/practice_report_upload/get-all", [PracticeReportUpload\PracticeReportUploadController::class, 'getAllPracticeReportUploads']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get("/practice_report_upload/get-active", [PracticeReportUpload\PracticeReportUploadController::class, 'getActivePracticeUploads']);
 });
 
 
@@ -120,31 +156,7 @@ Route::get('/agreement/get', [Agreement\GetController::class, 'getAgreement']);
 
 
 
-/**
- *  UKF Employee
- */
-Route::post('/ukf_employee/create', [UKF_Employee\CreateController::class, 'createUKF_Employee']);
-Route::post('/ukf_employee/edit', [UKF_Employee\EditController::class, 'updateUKF_Employee']);
-Route::post('/ukf_employee/delete', [UKF_Employee\DeleteController::class, 'deleteUKF_Employee']);
-Route::get('/ukf_employee/get', [UKF_Employee\GetController::class, 'getUKF_EmployeeById']);
-Route::get('/ukf_employee/get-by-name', [UKF_Employee\GetController::class, 'getUKF_EmployeeByName']);
-Route::get('/ukf_employee/get-by-surname', [UKF_Employee\GetController::class, 'getUKF_EmployeeBySurname']);
-Route::get('/ukf_employee/get-by-fullname', [UKF_Employee\GetController::class, 'getUKF_EmployeeByFullName']);
-Route::get('/ukf_employee/get-all-ukf_employees', [UKF_Employee\GetController::class, 'getAllUKF_Employees']);
 
-/**
- *  Company Employee
- */
-Route::post('/company_employee/create', [CompanyEmployee\CreateController::class, 'createCompanyEmployee']);
-Route::post('/company_employee/edit', [CompanyEmployee\EditController::class, 'updateCompanyEmployee']);
-Route::post('/company_employee/delete', [CompanyEmployee\DeleteController::class, 'deleteCompanyEmployee']);
-Route::get('/company_employee/get', [CompanyEmployee\GetController::class, 'getCompanyEmployeeById']);
-Route::get('/company_employee/get-by-name', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByName']);
-Route::get('/company_employee/get-by-surname', [CompanyEmployee\GetController::class, 'getCompanyEmployeeBySurname']);
-Route::get('/company_employee/get-by-fullname', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByFullName']);
-Route::get('/company_employee/get-all-ukf_employees', [CompanyEmployee\GetController::class, 'getAllCompanyEmployees']);
-Route::get('/company_employee/get-by-position', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByPosition']);
-Route::get('/company_employee/get-by-email', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByEmail']);
-Route::get('/company_employee/get-by-company_name', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByCompanyName']);
-Route::get('/company_employee/get-by-company_name_and_position', [CompanyEmployee\GetController::class, 'getCompanyEmployeeByCompanyAndPosition']);
+
+
 
