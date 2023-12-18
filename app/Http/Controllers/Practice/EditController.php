@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Practice;
 use App\Http\Controllers\Controller;
 use App\Models\Practice;
 use App\Services\ResponseService;
+use App\Variables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,6 +20,8 @@ class EditController extends Controller
 
     public function updatePractice(Request $request)
     {
+
+
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'student_id' => 'sometimes|exists:student,id',
