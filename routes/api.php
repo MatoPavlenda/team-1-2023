@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyReview\CompanyReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Student;
@@ -62,12 +63,12 @@ Route::middleware(["auth"])->group(function () {
      *  Student
      */
     Route::get("/student/get/", [Student\GetController::class, 'getStudentById']);
+    //TODO get by various
     Route::get("/student/get-by-email", [Student\GetController::class, 'getStudentByEmail']);
     Route::middleware("auth:{$vars->ukfEmployee}")->get("/student/get-all-students", [Student\GetController::class, 'getAllStudents']);
-    //TODO spytat sa ze ako creatnut studenta - ci to nespravi login
-    Route::middleware("auth:{$vars->admin}")->post("/student/create", [Student\CreateController::class, 'createStudent']);
+    Route::middleware("auth:{$vars->admin},{$vars->ukfEmployee}")->post("/student/create", [Student\CreateController::class, 'createStudent']);
     Route::middleware("auth:{$vars->admin}")->post("/student/delete/", [Student\DeleteController::class, 'deleteStudent']);
-    Route::middleware("auth:{$vars->admin}")->patch("/student/edit", [Student\EditController::class, 'updateStudent']);
+    Route::middleware("auth:{$vars->admin},{$vars->ukfEmployee}")->patch("/student/edit", [Student\EditController::class, 'updateStudent']);
 
     /**
      *  Practice
@@ -85,7 +86,16 @@ Route::middleware(["auth"])->group(function () {
     Route::get("study-program/get", [StudyProgram\StudyProgramController::class, 'getStudyProgram']);
     Route::get("study-program/get-all", [StudyProgram\StudyProgramController::class, 'getAllStudyPrograms']);
     Route::middleware("auth:{$vars->admin}")->delete("study-program/delete", [StudyProgram\StudyProgramController::class, 'deleteStudyProgram']);
-    Route::middleware("auth:{$vars->admin}")->patch("study-program/patch", [StudyProgram\StudyProgramController::class, 'editStudyProgram']);
+    Route::middleware("auth:{$vars->admin}")->patch("study-program/edit", [StudyProgram\StudyProgramController::class, 'editStudyProgram']);
+
+    /**
+     * Company Review
+     */
+    Route::middleware("auth:{$vars->student}")->post("company-review/create", [CompanyReviewController::class, 'createCompanyReview']);
+    Route::get("company-review/get", [CompanyReviewController::class, 'getCompanyReview']);
+    Route::get("company-review/get-all", [CompanyReviewController::class, 'getAllCompanyReviews']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->student}")->patch("company-review/edit", [CompanyReviewController::class, 'editCompanyReview']);
+    Route::middleware("auth:{$vars->admin}")->delete("company-review/delete", [CompanyReviewController::class, 'deleteCompanyReview']);
 });
 
 

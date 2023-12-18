@@ -64,4 +64,28 @@ class StudyProgramController extends Controller
             return $this->responseService->createErrorResponse("Study program not found");
         }
     }
+
+    public function editStudyProgram(Request $request)
+            {
+                $id = $request->input('id');
+
+                $validator = Validator::make($request->all(), [
+                    'id'=>'required',
+                    'name' => 'sometimes|string|max:255',
+                    'program_code' => 'sometimes|string|max:255',
+                ]);
+
+                if ($validator->fails()) {
+                    return $this->responseService->createInvalidDataResponse($validator->errors());
+                }
+
+                $studyProgram = StudyProgram::find($id);
+                if (!$studyProgram) {
+                    return $this->responseService->createErrorResponse("Study program with id " . $id . " was not found");
+                }
+
+                $studyProgram->update($validator->validated());
+                return $this->responseService->createSuccessfulResponse("Study program updated sucessfully");
+            }
+
 }
