@@ -16,7 +16,6 @@ class Practice extends Model
     protected $fillable = [
         'student_id',
         'practice_offer_id',
-        'company_employee_id',
         'title',
         'description',
         'startDate',

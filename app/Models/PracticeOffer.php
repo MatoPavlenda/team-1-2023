@@ -33,4 +33,8 @@ class PracticeOffer extends Model
     {
         return $this->belongsTo(CompanyEmployee::class, 'tutor_id');
     }
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'student_practice_offer', 'practice_offer_id', 'student_id');
+    }
 }
