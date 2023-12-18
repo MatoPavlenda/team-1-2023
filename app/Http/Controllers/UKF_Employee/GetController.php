@@ -32,42 +32,35 @@ class GetController extends Controller
 
 
 
-    public function getUKF_EmployeeByFullName(Request $request)
+    public function getUKF_EmployeeByFilter(Request $request)
     {
-        $name = $request->input('name');
-        $surname = $request->input('surname');
+        $query = UKF_Employee::query();
 
-        $ukf_employee = UKF_Employee::where('name', '=', $name)
-            ->where('surname', '=', $surname)
-            ->first();
-
-        if ($ukf_employee) {
-            return $this->responseService->createDataResponse($ukf_employee);
-        } else {
-            $errorMessage = "UKF Employee with name " . $name . " and surname " . $surname . " not found";
-            return $this->responseService->createErrorResponse($errorMessage);
+        // Filter by full name
+        if ($request->has('name') && $request->has('surname')) {
+            $name = $request->input('name');
+            $surname = $request->input('surname');
+            $query->where('name', $name)->where('surname', $surname);
         }
-    }
 
-    public function getUKF_EmployeeByName(Request $request)
-    {
-        $name = $request->input('name');
-        $ukf_employee = UKF_Employee::WHERE('name', "=", $name)->first();
-        if($ukf_employee){
-            return $this->responseService->createDataResponse($ukf_employee);
-        } else {
-            return $this->responseService->createErrorResponse("UKF Employee with name " . $name . " not found");
+        // Filter by name
+        if ($request->has('name')) {
+            $name = $request->input('name');
+            $query->where('name', 'like', '%' . $name . '%');
         }
-    }
 
-    public function getUKF_EmployeeBySurname(Request $request)
-    {
-        $surname = $request->input('surname');
-        $ukf_employee = UKF_Employee::WHERE('surname', "=", $surname)->first();
-        if($ukf_employee){
-            return $this->responseService->createDataResponse($ukf_employee);
+        // Filter by surname
+        if ($request->has('surname')) {
+            $surname = $request->input('surname');
+            $query->where('surname', 'like', '%' . $surname . '%');
+        }
+
+        $ukfEmployees = $query->get();
+
+        if ($ukfEmployees->isNotEmpty()) {
+            return $this->responseService->createDataResponse($ukfEmployees);
         } else {
-            return $this->responseService->createErrorResponse("UKF Employee with surname " . $surname . " not found");
+            return $this->responseService->createErrorResponse("No UKF Employees found with the specified filters");
         }
     }
 

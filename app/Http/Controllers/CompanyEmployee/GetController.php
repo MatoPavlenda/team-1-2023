@@ -29,110 +29,61 @@ class GetController extends Controller
         }
     }
 
-    public function getCompanyEmployeeByEmail(Request $request)
+    public function getCompanyEmployeeByFilter(Request $request)
     {
-        $email = $request->input('email');
-        $company_employee = CompanyEmployee::WHERE('email', "=", $email)->first();
-        if($company_employee){
-            return $this->responseService->createDataResponse($company_employee);
-        } else {
-            return $this->responseService->createErrorResponse("Company Employee with email " . $email . " not found");
-        }
-    }
+        $query = CompanyEmployee::query();
 
-    public function getCompanyEmployeeByFullName(Request $request)
-    {
-        $name = $request->input('name');
-        $surname = $request->input('surname');
-
-        $company_employee = CompanyEmployee::where('name', $name)
-            ->where('surname', $surname)
-            ->first();
-
-        if ($company_employee) {
-            return $this->responseService->createDataResponse($company_employee);
-        } else {
-            $errorMessage = "Company Employee with name " . $name . " and surname " . $surname . " not found";
-            return $this->responseService->createErrorResponse($errorMessage);
-        }
-    }
-
-    public function getCompanyEmployeeByName(Request $request)
-    {
-        $name = $request->input('name');
-        $company_employee = CompanyEmployee::where('name', $name)->get();
-        if($company_employee){
-            return $this->responseService->createDataResponse($company_employee);
-        } else {
-            return $this->responseService->createErrorResponse("Company Employee with name " . $name . " not found");
-        }
-    }
-
-    public function getCompanyEmployeeBySurname(Request $request)
-    {
-        $surname = $request->input('surname');
-        $company_employee= CompanyEmployee::where('surname', $surname)->get();
-
-        if($company_employee){
-            return $this->responseService->createDataResponse($company_employee);
-        } else {
-            return $this->responseService->createErrorResponse("Company Employee with surname " . $surname . " not found");
-        }
-    }
-
-
-    public function getCompanyEmployeeByPosition(Request $request)
-    {
-        $position= $request->input('position');
-        $company_employee = CompanyEmployee::where('position', $position)->get();
-
-        if($company_employee){
-            return $this->responseService->createDataResponse($company_employee);
-        } else {
-            return $this->responseService->createErrorResponse("Company Employee with position " . $position . " not found");
-        }
-    }
-
-
-    public function getCompanyEmployeeByCompanyName(Request $request)
-    {
-        $companyName = $request->input('company_name');
-
-        // Najdi ID firmy na základe názvu
-        $companyId = Company::where('name', $companyName)->value('id');
-
-        if (!$companyId) {
-            return $this->responseService->createErrorResponse("Company with name " . $companyName . " not found");
+        // Filter by email
+        if ($request->has('email')) {
+            $email = $request->input('email');
+            $query->where('email', '=', $email);
         }
 
-        // Company Employee na základe ID firmy
-        $companyEmployees = CompanyEmployee::where('company_id', $companyId)->get();
-
-        return $this->responseService->createDataResponse($companyEmployees);
-    }
-
-    public function getCompanyEmployeeByCompanyAndPosition(Request $request)
-    {
-        $companyName = $request->input('company_name');
-        $position = $request->input('position');
-
-        // Nájdi ID firmy na základe názvu
-        $companyId = Company::where('name', $companyName)->value('id');
-
-        if (!$companyId) {
-            return $this->responseService->createErrorResponse("Company with name " . $companyName . " not found");
+        // Filter by full name
+        if ($request->has('name') && $request->has('surname')) {
+            $name = $request->input('name');
+            $surname = $request->input('surname');
+            $query->where('name', $name)->where('surname', $surname);
         }
 
-        // Company Employee na základe ID firmy a pozície
-        $companyEmployees = CompanyEmployee::where('company_id', $companyId)
-            ->where('position', $position)
-            ->get();
+        // Filter by name
+        if ($request->has('name')) {
+            $name = $request->input('name');
+            $query->where('name', 'like', '%' . $name . '%');
+        }
+
+        // Filter by surname
+        if ($request->has('surname')) {
+            $surname = $request->input('surname');
+            $query->where('surname', 'like', '%' . $surname . '%');
+        }
+
+        // Filter by position
+        if ($request->has('position')) {
+            $position = $request->input('position');
+            $query->where('position', $position);
+        }
+
+        // Filter by company name
+        if ($request->has('company_name')) {
+            $companyName = $request->input('company_name');
+
+            // Find company ID based on name
+            $companyId = Company::where('name', $companyName)->value('id');
+
+            if ($companyId) {
+                $query->where('company_id', $companyId);
+            } else {
+                return $this->responseService->createErrorResponse("Company with name " . $companyName . " not found");
+            }
+        }
+
+        $companyEmployees = $query->get();
 
         if ($companyEmployees->isNotEmpty()) {
             return $this->responseService->createDataResponse($companyEmployees);
         } else {
-            $errorMessage = "Company Employee with position " . $position . " in company " . $companyName . " not found";
-            return $this->responseService->createErrorResponse($errorMessage);
+            return $this->responseService->createErrorResponse("No Company Employees found with the specified filters");
         }
     }
 
@@ -140,6 +91,7 @@ class GetController extends Controller
         $company_employees = CompanyEmployee::all();
         return $this->responseService->createDataResponse($company_employees);
     }
+
 
 
 }
