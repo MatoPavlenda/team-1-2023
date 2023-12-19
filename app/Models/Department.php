@@ -31,4 +31,10 @@ class Department extends Model
 
     protected $dates = ['deleted_at'];
 
+    public function study_program()
+    {
+        return $this->belongsToMany(StudyProgram::class, 'study_program2department');
+
+    }
+
 }
