@@ -11,7 +11,8 @@ class StudentReview extends Model
 
     protected $fillable = [
         'student_id',
-        'ukf_employee_id',
+        'company_employee_id',
+        'practice_id',
         'rating',
         'comment',
     ];
@@ -26,7 +27,12 @@ class StudentReview extends Model
         return $this->belongsTo(Student::class, 'student_id');
     }
 
-    public function ukfEmployee()
+    public function company_employee()
+    {
+        return $this->belongsTo(UKF_Employee::class, 'company_employee_id');
+    }
+
+    public function ukf_employee()
     {
         return $this->belongsTo(UKF_Employee::class, 'ukf_employee_id');
     }

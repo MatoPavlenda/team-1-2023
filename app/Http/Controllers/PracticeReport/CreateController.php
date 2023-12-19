@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\StudentReview;
+namespace App\Http\Controllers\PracticeReport;
 
 use App\Http\Controllers\Controller;
-use App\Models\StudentReview;
+use App\Models\PracticeReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Services\ResponseService;
@@ -17,14 +17,13 @@ class CreateController extends Controller
         $this->responseService = $responseService;
     }
 
-    public function createStudentReview(Request $request)
+    public function createPracticeReport(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'student_id' => 'required|exists:student,id',
-            'company_employee_id' => 'required|exists:company_employee,id',
             'practice_id' => 'required|exists:practice,id',
-            'rating' => 'required|integer',
-            'comment' => 'sometimes|string',
+            'date' => 'required|date',
+            'time' => 'sometimes|integer',
+            'description' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -32,8 +31,8 @@ class CreateController extends Controller
         }
 
         $validatedData = $validator->validated();
-        $studentReview = StudentReview::create($validatedData);
+        $practiceReport = PracticeReport::create($validatedData);
 
-        return $this->responseService->createSuccessfulResponse($studentReview);
+        return $this->responseService->createSuccessfulResponse($practiceReport);
     }
 }

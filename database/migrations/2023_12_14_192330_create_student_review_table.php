@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('student_review', function (Blueprint $table) {
             $table->foreignId('student_id')->constrained('student')->onDelete('cascade');
-            $table->foreignId('ukf_employee_id')->constrained('ukf_employee')->onDelete('cascade');
+            $table->foreignId('company_employee_id')->constrained('company_employee')->onDelete('cascade');
+            $table->foreignId('practice_id')->constrained('practice')->onDelete('cascade');
             $table->integer('rating');
             $table->text('comment');
             $table->timestamps();
-            $table->primary(['student_id', 'ukf_employee_id']);
+            $table->softDeletes();
+            $table->primary(['student_id', 'company_employee_id', 'practice_id']);
         });
     }
 
