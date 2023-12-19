@@ -18,13 +18,15 @@ class CompanyReviewController extends Controller
         $this->responseService = $responseService;
     }
 
+    //TODO doplnit aby mohli studenti len za seba pridavat
     public function createCompanyReview(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'id_company' => 'required|exists:company,id',
             'id_practice' => 'required|exists:practice,id',
             'id_student' => 'required|exists:student,id',
-            'review_comment' => 'required|string',
+            'review_comment' => 'sometimes|nullable|string',
+            'rating' => 'required|integer|min:1|max:10',
         ]);
 
         if ($validator->fails()) {
@@ -87,7 +89,8 @@ class CompanyReviewController extends Controller
 
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'review_comment' => 'required|string',
+            'id_student' => 'required|exists:student,id',
+            'review_comment' => 'sometimes|string',
         ]);
 
         if ($validator->fails()) {

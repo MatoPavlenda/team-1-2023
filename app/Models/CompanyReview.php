@@ -16,6 +16,7 @@ class CompanyReview extends Model
         'id_company',
         'id_practice',
         'id_student',
+        'rating',
         'review_comment'
     ];
 
