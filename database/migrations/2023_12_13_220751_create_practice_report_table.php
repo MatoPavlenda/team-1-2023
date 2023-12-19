@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('practise_report', function (Blueprint $table) {
+        Schema::create('practice_report', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('practise_id')->constrained('practice')->onDelete('cascade');
+            $table->foreignId('practice_id')->constrained('practice')->onDelete('cascade');
             $table->date('date');
             $table->integer('time');
             $table->text('description');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('practise_report');
+        Schema::dropIfExists('practice_report');
     }
 };
