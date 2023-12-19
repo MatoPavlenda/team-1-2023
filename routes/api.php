@@ -3,7 +3,7 @@
 use App\Http\Controllers\CompanyReview\CompanyReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PractiseReport;
+use App\Http\Controllers\PracticeReport;
 use App\Http\Controllers\Student;
 use App\Http\Controllers\Agreement;
 use App\Http\Controllers\Practice;
@@ -184,18 +184,18 @@ Route::middleware(["auth"])->group(function () {
     /**
      * Practice Report
      */
-    Route::middleware("auth:{$vars->student}")->post("/practise_report/create", [PractiseReport\CreateController::class, 'createPractiseReport']);
-    Route::middleware("auth:{$vars->ukfEmployee}")->get("/practise_report/{id}/get", [PractiseReport\GetController::class, 'getPractiseReportById']);
-    Route::middleware("auth:{$vars->ukfEmployee}")->get("/practise_report/getAll", [PractiseReport\GetController::class, 'getAllPractiseReports']);
-    Route::middleware("auth:{$vars->ukfEmployee}")->post("/practise_report/{id}/edit", [PractiseReport\EditController::class, 'updatePractiseReport']);
-    Route::middleware("auth:{$vars->ukfEmployee}")->post("/practise_report/{id}/delete", [PractiseReport\DeleteController::class, 'deletePractiseReport']);
+    Route::middleware("auth:{$vars->student}")->post("/practice_report/create", [PracticeReport\CreateController::class, 'createPracticeReport']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->get("/practice_report/{id}/get", [PracticeReport\GetController::class, 'getPracticeReportById']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get("/practice_report/getAll", [PracticeReport\GetController::class, 'getAllPracticeReports']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post("/practice_report/{id}/edit", [PracticeReport\EditController::class, 'updatePracticeReport']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post("/practice_report/{id}/delete", [PracticeReport\DeleteController::class, 'deletePracticeReport']);
 
 
     /**
      * Student Review
      */
     Route::middleware("auth:{$vars->student}")->post('/student_review/create', [StudentReview\CreateController::class, 'createStudentReview']);
-    Route::middleware("auth:{$vars->ukfEmployee}")->get('/student_review/{studentId}/{ukfEmployeeId}/get', [StudentReview\GetController::class, 'getStudentReviewById']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->get('/student_review/{studentId}/{ukfEmployeeId}/get', [StudentReview\GetController::class, 'getStudentReviewById']);
     Route::middleware("auth:{$vars->ukfEmployee}")->get('/student_review/getAll', [StudentReview\GetController::class, 'getAllStudentReviews']);
     Route::middleware("auth:{$vars->ukfEmployee}")->post('/student_review/{studentId}/{ukfEmployeeId}/edit', [StudentReview\EditController::class, 'updateStudentReview']);
     Route::middleware("auth:{$vars->ukfEmployee}")->post('/student_review/{studentId}/{ukfEmployeeId}/delete', [StudentReview\DeleteController::class, 'deleteStudentReview']);
