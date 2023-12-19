@@ -24,6 +24,11 @@ class Practice extends Model
         'finished',
     ];
 
+    protected $attributes = [
+        'active' => false,
+        'finished' => false,
+    ];
+
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id');

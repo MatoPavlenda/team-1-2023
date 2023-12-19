@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CompanyReview;
 
 use App\Http\Controllers\Controller;
 use App\Models\CompanyReview;
+use App\Models\Practice;
 use App\Services\ResponseService;
 use App\Variables;
 use Illuminate\Http\Request;
@@ -18,7 +19,6 @@ class CompanyReviewController extends Controller
         $this->responseService = $responseService;
     }
 
-    //TODO doplnit aby mohli studenti len za seba pridavat
     public function createCompanyReview(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -31,6 +31,26 @@ class CompanyReviewController extends Controller
 
         if ($validator->fails()) {
             return $this->responseService->createInvalidDataResponse($validator->errors());
+        }
+
+        $vars = new Variables();
+        $user = auth()->user();
+
+        if($user->role==$vars->student) {
+            $student = $user->student;
+            if (!$student) {
+                return $this->responseService->createErrorResponse("Student record not found");
+            }
+
+            if($student->id !== $request->input('id_student')){
+                return $this->responseService->createUnauthorizedResponse("You cannot add reviews for other students");
+            }
+
+            $practiceId = $request->get('id_practice');
+            $hasPractice = $student->practices()->where('id', $practiceId)->exists();
+            if(!$hasPractice){
+                return $this->responseService->createUnauthorizedResponse("You cannot add review for practice you have not been to");
+            }
         }
 
         $validatedData = $validator->validated();

@@ -17,7 +17,7 @@ use App\Http\Controllers\PracticeReportUpload;
 |
 | Here is where you can register API routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| be assigned to the "api" middleware group. Make something great! -> we sure did
 |
 */
 
@@ -64,7 +64,6 @@ Route::middleware(["auth"])->group(function () {
      *  Student
      */
     Route::get("/student/get/", [Student\GetController::class, 'getStudentById']);
-    //TODO get by various
     Route::get("/student/get-by-email", [Student\GetController::class, 'getStudentByEmail']);
     Route::middleware("auth:{$vars->ukfEmployee}")->get("/student/get-all-students", [Student\GetController::class, 'getAllStudents']);
     Route::middleware("auth:{$vars->admin},{$vars->ukfEmployee}")->post("/student/create", [Student\CreateController::class, 'createStudent']);
