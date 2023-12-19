@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Services\EditDbRecordService;
 use App\Services\ResponseService;
 use App\Services\ValidatorService;
+use App\Variables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -72,10 +73,18 @@ class EditController extends Controller
             return $this->responseService->createErrorResponse();
         }
 
-        /*
-         * TODO - If company employee use role is editing, check if this employee is under this company
-         * TODO - Variation 2, add to comapny employee value admin, and only admin can edit company info
-         */
+        $vars = new Variables();
+        $user = auth()->user();
+
+        if ($user->role == $vars->companyEmployee) {
+            $companyIdUser = $user->companyEmployee->company->id;
+            if ($companyIdUser != $id) {
+                return $this->responseService->createNoPermisionResponse("You you can not edit foreign company");
+            }
+            if ($user->companyEmployee->admin == 0) {
+                return $this->responseService->createNoPermisionResponse("You are not admin of this company");
+            }
+        }
 
         $company = $this->editDbRecordService->editRecord($company, [
             ['name', $name],

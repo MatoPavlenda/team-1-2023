@@ -34,31 +34,40 @@ Route::post("/login", [\App\Http\Controllers\Authentication\AuthController::clas
 Route::middleware(["auth"])->group(function () {
     $vars = new \App\Variables();
     /**
-     *  Company
+     *  Company (M)
      */
     Route::middleware("auth:{$vars->ukfEmployee}")->post("/company/create", [\App\Http\Controllers\Company\CreateController::class, "method"]);
-    Route::post("/company/get", [\App\Http\Controllers\Company\GetController::class, "method"]);
-    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->post("/company/edit", [\App\Http\Controllers\Company\EditController::class, "method"]);
-    Route::middleware("auth:{$vars->admin}")->post("/company/delete", [\App\Http\Controllers\Company\DeleteController::class, "method"]);
+    Route::get("/company/get", [\App\Http\Controllers\Company\GetController::class, "method"]);
+    Route::get("/company/get-all", [\App\Http\Controllers\Company\GetController::class, "method2"]);
+    Route::get("/company/get-by-filter", [\App\Http\Controllers\Company\GetController::class, "method3"]);
+    Route::get("/company/get-count", [\App\Http\Controllers\Company\GetController::class, "method4"]);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->patch("/company/edit", [\App\Http\Controllers\Company\EditController::class, "method"]);
+    Route::middleware("auth:{$vars->admin}")->delete("/company/delete", [\App\Http\Controllers\Company\DeleteController::class, "method"]);
 
 
     /**
-     *  Practice offer
+     *  Practice offer (M)
      */
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->post("/practice-offer/create", [\App\Http\Controllers\PracticeOffer\CreateController::class, "method"]);
-    Route::post("/practice-offer/get", [\App\Http\Controllers\PracticeOffer\GetController::class, "method"]);
-    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->post("/practice-offer/edit", [\App\Http\Controllers\PracticeOffer\EditController::class, "method"]);
-    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->post("/practice-offer/delete", [\App\Http\Controllers\PracticeOffer\DeleteController::class, "method"]);
+    Route::get("/practice-offer/get", [\App\Http\Controllers\PracticeOffer\GetController::class, "method"]);
+    Route::get("/practice-offer/get-all", [\App\Http\Controllers\PracticeOffer\GetController::class, "method2"]);
+    Route::get("/practice-offer/get-by-filter", [\App\Http\Controllers\PracticeOffer\GetController::class, "method3"]);
+    Route::get("/practice-offer/get-count", [\App\Http\Controllers\PracticeOffer\GetController::class, "method4"]);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->patch("/practice-offer/edit", [\App\Http\Controllers\PracticeOffer\EditController::class, "method"]);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->delete("/practice-offer/delete", [\App\Http\Controllers\PracticeOffer\DeleteController::class, "method"]);
 
 
     /**
-     *  Contract
+     *  Contract (M)
      */
     Route::middleware("auth:{$vars->ukfEmployee}")->post("/contract/create", [\App\Http\Controllers\Contract\CreateController::class, "method"]);
-    Route::middleware("auth:{$vars->ukfEmployee}")->post("/contract/get", [\App\Http\Controllers\Contract\GetController::class, "method"]);
-    Route::middleware("auth:{$vars->ukfEmployee}")->post("/contract/get-file", [\App\Http\Controllers\Contract\GetFileController::class, "method"]);
-    Route::middleware("auth:{$vars->ukfEmployee}")->post("/contract/edit", [\App\Http\Controllers\Contract\EditController::class, "method"]);
-    Route::middleware("auth:{$vars->admin}")->post("/contract/delete", [\App\Http\Controllers\Contract\DeleteController::class, "method"]);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get("/contract/get", [\App\Http\Controllers\Contract\GetController::class, "method"]);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get("/contract/get-all", [\App\Http\Controllers\Contract\GetController::class, "method2"]);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get("/contract/get-by-filter", [\App\Http\Controllers\Contract\GetController::class, "method3"]);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get("/contract/get-count", [\App\Http\Controllers\Contract\GetController::class, "method4"]);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get("/contract/get-file", [\App\Http\Controllers\Contract\GetFileController::class, "method"]);
+    Route::middleware("auth:{$vars->ukfEmployee}")->patch("/contract/edit", [\App\Http\Controllers\Contract\EditController::class, "method"]);
+    Route::middleware("auth:{$vars->admin}")->delete("/contract/delete", [\App\Http\Controllers\Contract\DeleteController::class, "method"]);
 
 
     /**
