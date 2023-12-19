@@ -10,6 +10,7 @@ use App\Http\Controllers\StudyProgram;
 use App\Http\Controllers\UKF_Employee;
 use App\Http\Controllers\CompanyEmployee;
 use App\Http\Controllers\PracticeReportUpload;
+use App\Http\Controllers\UKF_Employee_Department;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -141,17 +142,29 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->admin}")->post('/department/create', [\App\Http\Controllers\Department\CreateController::class, 'createDepartment']);
     Route::get('/department/getAll', [\App\Http\Controllers\Department\GetController::class, 'getAllDepartments']);
     Route::get('/department/{id}/get', [\App\Http\Controllers\Department\GetController::class, 'getDepartmentById']);
-    Route::middleware("auth:{$vars->admin}")->post('/department/edit', [\App\Http\Controllers\Department\EditController::class, 'updateDepartment']);
-    Route::middleware("auth:{$vars->admin}")->post('/department/delete', [\App\Http\Controllers\Department\DeleteController::class, 'deleteDepartment']);
+    Route::middleware("auth:{$vars->admin}")->patch('/department/edit', [\App\Http\Controllers\Department\EditController::class, 'updateDepartment']);
+    Route::middleware("auth:{$vars->admin}")->delete('/department/delete', [\App\Http\Controllers\Department\DeleteController::class, 'deleteDepartment']);
 
 
     /**
      *  Agreement
      */
-    Route::middleware("auth:{$vars->ukfEmployee}")->post('/agreement/create', [Agreement\CreateController::class, 'createAgreement']);
-    Route::middleware("auth:{$vars->ukfEmployee}")->post('/agreement/edit', [Agreement\EditController::class, 'updateAgreement']);
-    Route::middleware("auth:{$vars->ukfEmployee}")->post('/agreement/delete', [Agreement\DeleteController::class, 'deleteAgreement']);
-    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee},{$vars->student}")->get('/agreement/get', [Agreement\GetController::class, 'getAgreement']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->student}")->post('/agreement/create', [Agreement\CreateController::class, 'createAgreement']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->patch('/agreement/edit', [Agreement\EditController::class, 'updateAgreement']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->delete('/agreement/delete', [Agreement\DeleteController::class, 'deleteAgreement']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee},{$vars->student}")->get('/agreement/get', [Agreement\GetController::class, 'getAgreementById']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get('/agreement/get-by-filter', [Agreement\GetController::class, 'getAgreementByFilter']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get('/agreement/get-all', [Agreement\GetController::class, 'getAllAgreements']);
 
+    /**
+     *  UKF_Employee_Department
+     */
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/ukf_employee_department/create', [UKF_Employee_Department\CreateController::class, 'createUKF_Employee_Department']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->patch('/ukf_employee_department/edit', [UKF_Employee_Department\EditController::class, 'updateUKF_Employee_Department']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->delete('/ukf_employee_department/delete', [UKF_Employee_Department\DeleteController::class, 'deleteUKF_Employee_Department']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee},{$vars->student}")->get('/ukf_employee_department/get', [UKF_Employee_Department\GetController::class, 'getUKF_Employee_DepartmentById']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get('/ukf_employee_department/get-by-filter', [UKF_Employee_Department\GetController::class, 'getUKF_Employee_DepartmentByFilter']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get('/ukf_employee_department/get-all', [UKF_Employee_Department\GetController::class, 'getAllUKF_employee_Department']);
 
 });
+
