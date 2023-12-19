@@ -25,7 +25,8 @@ class EditController extends Controller
             'surname' => 'sometimes|string|max:50',
             'email' => 'sometimes|string|email|max:255|unique:company_employee,email,' . $id,
             'position' => 'sometimes|string|max:50',
-            'company_id' => 'sometimes|exists:company,id'
+            'company_id' => 'sometimes|exists:company,id',
+            'admin' => 'sometimes|integer|min:0|max:1'
         ]);
 
         if ($validator->fails()) {
