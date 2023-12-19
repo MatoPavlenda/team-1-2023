@@ -11,6 +11,7 @@ use App\Http\Controllers\UKF_Employee;
 use App\Http\Controllers\CompanyEmployee;
 use App\Http\Controllers\PracticeReportUpload;
 use App\Http\Controllers\UKF_Employee_Department;
+use App\Http\Controllers\UKF_Employee_StudyProgram;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -99,6 +100,8 @@ Route::middleware(["auth"])->group(function () {
     Route::get("study-program/get-all", [StudyProgram\StudyProgramController::class, 'getAllStudyPrograms']);
     Route::middleware("auth:{$vars->admin}")->delete("study-program/delete", [StudyProgram\StudyProgramController::class, 'deleteStudyProgram']);
     Route::middleware("auth:{$vars->admin}")->patch("study-program/edit", [StudyProgram\StudyProgramController::class, 'editStudyProgram']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post("study-program/create", [StudyProgram\StudyProgramController::class, 'createStudyProgram']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->patch("study-program/edit", [StudyProgram\StudyProgramController::class, 'editStudyProgram']);
 
     /**
      * Company Review
@@ -176,5 +179,15 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->ukfEmployee}")->get('/ukf_employee_department/get-by-filter', [UKF_Employee_Department\GetController::class, 'getUKF_Employee_DepartmentByFilter']);
     Route::middleware("auth:{$vars->ukfEmployee}")->get('/ukf_employee_department/get-all', [UKF_Employee_Department\GetController::class, 'getAllUKF_employee_Department']);
 
+    /**
+     *  UKF_Employee_StudyProgram
+     */
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->admin}")->post('/ukf_employee_study_program/create', [UKF_Employee_StudyProgram\UKF_Employee_StudyProgramController::class, 'createUKF_Employee_StudyProgram']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->admin}")->patch('/ukf_employee_study_program/edit', [UKF_Employee_StudyProgram\UKF_Employee_StudyProgramController::class, 'updateUKF_Employee_StudyProgram']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->admin}")->delete('/ukf_employee_study_program/delete', [UKF_Employee_StudyProgram\UKF_Employee_StudyProgramController::class, 'deleteUKF_Employee_StudyProgram']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->admin}")->get('/ukf_employee_study_program/get', [UKF_Employee_StudyProgram\UKF_Employee_StudyProgramController::class, 'getUKF_Employee_StudyProgramById']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->admin}")->get('/ukf_employee_study_program/get-by-filter', [UKF_Employee_StudyProgram\UKF_Employee_StudyProgramController::class, 'getUKF_Employee_StudyProgramByFilter']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->admin}")->get('/ukf_employee_study_program/get-all', [UKF_Employee_StudyProgram\UKF_Employee_StudyProgramController::class, 'getAllUKF_Employee_StudyPrograms']);
 });
+
 

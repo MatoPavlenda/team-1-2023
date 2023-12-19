@@ -64,6 +64,11 @@ class GetController extends Controller
             $query->where('position', $position);
         }
 
+        if ($request->has('admin')) {
+            $admin = $request->input('admin');
+            $query->where('admin', '=', $admin);
+        }
+
         // Filter by company name
         if ($request->has('company_name')) {
             $companyName = $request->input('company_name');

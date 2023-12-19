@@ -24,7 +24,8 @@ class CreateController extends Controller
             'surname' => 'required|string|max:50',
             'email' => 'required|string|email|max:255|unique:company_employee',
             'position' => 'required|string|max:50',
-            'company_id' => 'required|exists:company,id'
+            'company_id' => 'required|exists:company,id',
+            'admin' => 'required|integer|min:0|max:1'
         ]);
 
 
