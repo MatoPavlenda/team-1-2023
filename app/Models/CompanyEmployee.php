@@ -17,6 +17,7 @@ class CompanyEmployee extends Model
         'email',
         'position',
         'company_id',
+        'admin',
     ];
 
     protected $table = 'company_employee';
