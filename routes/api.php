@@ -153,8 +153,5 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->ukfEmployee}")->post('/agreement/delete', [Agreement\DeleteController::class, 'deleteAgreement']);
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee},{$vars->student}")->get('/agreement/get', [Agreement\GetController::class, 'getAgreement']);
 
+
 });
-
-
-
-
