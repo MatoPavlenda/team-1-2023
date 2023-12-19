@@ -20,6 +20,8 @@ class EditController extends Controller
 
     public function updatePractice(Request $request)
     {
+
+
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'student_id' => 'sometimes|exists:student,id',
