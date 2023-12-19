@@ -3,6 +3,7 @@
 use App\Http\Controllers\CompanyReview\CompanyReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PracticeReport;
 use App\Http\Controllers\Student;
 use App\Http\Controllers\Agreement;
 use App\Http\Controllers\Practice;
@@ -10,6 +11,7 @@ use App\Http\Controllers\StudyProgram;
 use App\Http\Controllers\UKF_Employee;
 use App\Http\Controllers\CompanyEmployee;
 use App\Http\Controllers\PracticeReportUpload;
+use App\Http\Controllers\StudentReview;
 use App\Http\Controllers\UKF_Employee_Department;
 use App\Http\Controllers\UKF_Employee_StudyProgram;
 /*
@@ -180,6 +182,26 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->ukfEmployee}")->get('/ukf_employee_department/get-all', [UKF_Employee_Department\GetController::class, 'getAllUKF_employee_Department']);
 
     /**
+     * Practice Report
+     */
+    Route::middleware("auth:{$vars->student}")->post("/practice_report/create", [PracticeReport\CreateController::class, 'createPracticeReport']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->get("/practice_report/{id}/get", [PracticeReport\GetController::class, 'getPracticeReportById']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get("/practice_report/getAll", [PracticeReport\GetController::class, 'getAllPracticeReports']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post("/practice_report/{id}/edit", [PracticeReport\EditController::class, 'updatePracticeReport']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post("/practice_report/{id}/delete", [PracticeReport\DeleteController::class, 'deletePracticeReport']);
+
+
+    /**
+     * Student Review
+     */
+    Route::middleware("auth:{$vars->student}")->post('/student_review/create', [StudentReview\CreateController::class, 'createStudentReview']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->get('/student_review/{studentId}/{ukfEmployeeId}/get', [StudentReview\GetController::class, 'getStudentReviewById']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get('/student_review/getAll', [StudentReview\GetController::class, 'getAllStudentReviews']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/student_review/{studentId}/{ukfEmployeeId}/edit', [StudentReview\EditController::class, 'updateStudentReview']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/student_review/{studentId}/{ukfEmployeeId}/delete', [StudentReview\DeleteController::class, 'deleteStudentReview']);
+
+
+    /**
      *  UKF_Employee_StudyProgram
      */
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->admin}")->post('/ukf_employee_study_program/create', [UKF_Employee_StudyProgram\UKF_Employee_StudyProgramController::class, 'createUKF_Employee_StudyProgram']);
@@ -189,5 +211,4 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->admin}")->get('/ukf_employee_study_program/get-by-filter', [UKF_Employee_StudyProgram\UKF_Employee_StudyProgramController::class, 'getUKF_Employee_StudyProgramByFilter']);
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->admin}")->get('/ukf_employee_study_program/get-all', [UKF_Employee_StudyProgram\UKF_Employee_StudyProgramController::class, 'getAllUKF_Employee_StudyPrograms']);
 });
-
 
