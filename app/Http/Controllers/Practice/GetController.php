@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Practice;
 use App\Http\Controllers\Controller;
 use App\Models\Practice;
 use App\Models\Student;
+use App\Services\DynamicFilterService;
 use App\Services\ResponseService;
 use App\Variables;
 use Illuminate\Http\Request;
@@ -12,10 +13,12 @@ use Illuminate\Http\Request;
 class GetController extends Controller
 {
     private $responseService;
+    private $dynamicFilterService;
 
-    public function __construct(ResponseService $responseService)
+    public function __construct(ResponseService $responseService,DynamicFilterService $dynamicFilterService)
     {
         $this->responseService = $responseService;
+        $this->dynamicFilterService = $dynamicFilterService;
     }
 
     public function getPracticeById(Request $request)
@@ -45,6 +48,17 @@ class GetController extends Controller
         } else {
             return $this->responseService->createErrorResponse("Practice not found");
         }
+    }
+
+    public function getPracticeByFilter(Request $request){
+        $filteredPractices = $this->dynamicFilterService->applyFilters(new Practice,
+            ['student_id',
+            'practice_offer_id',
+            'title',
+            'description',
+            'active',
+            'finished',])->get();
+        return $this->responseService->createDataResponse($filteredPractices);
     }
 
     public function getAllPractices(){
