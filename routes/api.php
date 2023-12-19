@@ -70,6 +70,8 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->admin},{$vars->ukfEmployee}")->post("/student/create", [Student\CreateController::class, 'createStudent']);
     Route::middleware("auth:{$vars->admin}")->post("/student/delete/", [Student\DeleteController::class, 'deleteStudent']);
     Route::middleware("auth:{$vars->admin},{$vars->ukfEmployee}")->patch("/student/edit", [Student\EditController::class, 'updateStudent']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->patch("/student/attachStudentToStudyProgram", [Student\EditController::class, 'attachStudentToStudyProgram']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->student}")->patch("/student/attachStudentToPracticeOffer", [Student\EditController::class, 'attachStudentToPracticeOffer']);
 
     /**
      *  Practice
