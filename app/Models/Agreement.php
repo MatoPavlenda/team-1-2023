@@ -12,13 +12,13 @@ class Agreement extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'i_id_company',
-        'i_id_student',
-        'i_id_ukf_employee',
-        't_url',
+        'company_id',
+        'student_id',
+        'ukf_employee_id',
+        't_url-',
         'd_sdate',
         'd_edate',
-        'd_cdate', // možno vymazať, timestamp doplní
+        'd_cdate',
         's_active',
 
     ];
@@ -35,17 +35,17 @@ class Agreement extends Model
 
     public function agreement()
     {
-        return $this->belongsTo(Company::class, 'i_id_company');
+        return $this->belongsTo(Company::class, 'company_id');
 
     }
     public function student()
     {
-        return $this->belongsTo(Student::class, 'i_id_student');
+        return $this->belongsTo(Student::class, 'student_id');
     }
 
-        public function ukfEmployee()
+        public function ukf_employee()
     {
-        return $this->belongsTo(UKF_Employee::class, 'i_id_ukf_employee');
+        return $this->belongsTo(UKF_Employee::class, 'ukf_employee_id');
     }
 
 

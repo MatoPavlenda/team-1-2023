@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Agreement;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agreement;
+use App\Models\Student;
 use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -21,14 +22,14 @@ class GetController extends Controller
     {
         // Validation for all attributes
         $validator = Validator::make($request->all(), [
-            'i_id_company' => 'exists:i_id_company',
-            'i_id_student' => 'exists:i_id_student',
-            'i_id_ukf_employee' => 'exists:i_id_ukf_employee',
-            't_url' => 'string|max:255',
+            'company_id' => 'exists:company_id',
+            'student_id' => 'exists:student_id',
+            'ukf_employee_id' => 'exists:ukf_employee_id',
+            't_url-' => 'string|max:300',
             'd_sdate' => 'date_format:Y-m-d',
             'd_edate' => 'date_format:Y-m-d',
             'd_cdate' => 'date_format:Y-m-d',
-            's_active' => 'string|max:255',
+            's_active' => 'integer|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -39,7 +40,7 @@ class GetController extends Controller
         $query = Agreement::query();
 
         // Apply filters for specified attributes
-        foreach ($request->only(['i_id_company', 'i_id_student', 'i_id_ukf_employee', 't_url', 'd_sdate', 'd_edate', 'd_cdate', 's_active']) as $key => $value) {
+        foreach ($request->only(['company_id', 'student_id', 'ukf_employee_id', 't_url-', 'd_sdate', 'd_edate', 'd_cdate', 's_active']) as $key => $value) {
             if ($request->filled($key)) {
                 $query->where($key, $value);
             }
@@ -48,5 +49,10 @@ class GetController extends Controller
         $agreement = $query->get();
 
         return response()->json($agreement);
+    }
+
+    public function getAllAgreement(){
+        $agreement = Agreement::all();
+        return $this->responseService->createDataResponse($agreement);
     }
 }

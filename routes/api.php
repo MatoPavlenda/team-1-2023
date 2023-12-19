@@ -132,30 +132,28 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->ukfEmployee}")->get("/practice_report_upload/get", [PracticeReportUpload\PracticeReportUploadController::class, 'getPracticeReportUploadById']);
     Route::middleware("auth:{$vars->ukfEmployee}")->get("/practice_report_upload/get-all", [PracticeReportUpload\PracticeReportUploadController::class, 'getAllPracticeReportUploads']);
     Route::middleware("auth:{$vars->ukfEmployee}")->get("/practice_report_upload/get-active", [PracticeReportUpload\PracticeReportUploadController::class, 'getActivePracticeUploads']);
+
+
+
+    /**
+     * Department
+     */
+    Route::middleware("auth:{$vars->admin}")->post('/department/create', [\App\Http\Controllers\Department\CreateController::class, 'createDepartment']);
+    Route::get('/department/getAll', [\App\Http\Controllers\Department\GetController::class, 'getAllDepartments']);
+    Route::get('/department/{id}/get', [\App\Http\Controllers\Department\GetController::class, 'getDepartmentById']);
+    Route::middleware("auth:{$vars->admin}")->post('/department/edit', [\App\Http\Controllers\Department\EditController::class, 'updateDepartment']);
+    Route::middleware("auth:{$vars->admin}")->post('/department/delete', [\App\Http\Controllers\Department\DeleteController::class, 'deleteDepartment']);
+
+
+    /**
+     *  Agreement
+     */
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/agreement/create', [Agreement\CreateController::class, 'createAgreement']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/agreement/edit', [Agreement\EditController::class, 'updateAgreement']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/agreement/delete', [Agreement\DeleteController::class, 'deleteAgreement']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee},{$vars->student}")->get('/agreement/get', [Agreement\GetController::class, 'getAgreement']);
+
 });
-
-
-/*
- * Department
- */
-Route::post('/department/create', [\App\Http\Controllers\Department\CreateController::class, 'createDepartment']);
-Route::get('/department/getAll', [\App\Http\Controllers\Department\GetController::class, 'getAllDepartments']);
-Route::get('/department/{id}/get', [\App\Http\Controllers\Department\GetController::class, 'getDepartmentById']);
-Route::post('/department/{id}/edit', [\App\Http\Controllers\Department\EditController::class, 'updateDepartment']);
-Route::post('/department/{id}/delete', [\App\Http\Controllers\Department\DeleteController::class, 'deleteDepartment']);
-
-
-/**
- *  Agreement
- */
-Route::post('/agreement/create', [Agreement\CreateController::class, 'createAgreement']);
-Route::post('/agreement/edit', [Agreement\EditController::class, 'updateAgreement']);
-Route::post('/agreement/delete', [Agreement\DeleteController::class, 'deleteAgreement']);
-Route::get('/agreement/get', [Agreement\GetController::class, 'getAgreement']);
-
-
-
-
 
 
 

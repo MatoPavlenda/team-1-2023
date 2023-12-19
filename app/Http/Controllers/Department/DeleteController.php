@@ -4,22 +4,31 @@ namespace App\Http\Controllers\Department;
 
 use App\Http\Controllers\Controller;
 use App\Models\Department;
+use App\Services\ResponseService;
+use Illuminate\Http\Request;
 
 class DeleteController extends Controller
 {
 
-    public function deleteDepartment(int $id)
+    private $responseService;
+
+    public function __construct(ResponseService $responseService)
     {
+        $this->responseService = $responseService;
+    }
 
+    public function deleteDepartment(Request $request)
+    {
+        $id = $request->input("id");
         $department = Department::find($id);
+
         if ($department) {
-
-
             // Since Department uses soft delete it will not delete from table
             $department->delete();
-            return response()->json(['message' => 'Department deleted successfully.'], 200);
+
+            return $this->responseService->createSuccessfulResponse('Department deleted successfully.');
         } else {
-            return response()->json(['message' => 'Department not found.'], 404);
+            return $this->responseService->createErrorResponse('Department not found.');
         }
     }
 

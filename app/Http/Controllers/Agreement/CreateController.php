@@ -21,14 +21,15 @@ class CreateController extends Controller
     {
         $validator = Validator::make($request->all(), [
 
-            'i_id_company' => 'required|exists:i_id_company',
-            'i_id_student' => 'required|exists:i_id_student',
-            'i_id_ukf_employee' => 'required|exists:i_id_ukf_employee',
-            't_url' => 'required|string|max:255',
+            'company_id' => 'required|exists:company,id',
+            'student_id' => 'required|exists:student,id',
+            'ukf_employee_id' => 'required|exists:ukf_employee,id',
+            't_url-' => 'sometimes|string|max:300',
             'd_sdate' => 'required|date_format:Y-m-d',
             'd_edate' => 'required|date_format:Y-m-d',
             'd_cdate' => 'required|date_format:Y-m-d',
-            's_active' => 'required|string|max:255',
+            's_active' => 'required|integer|max:255',
+
         ]);
 
         if ($validator->fails()) {
