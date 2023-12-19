@@ -16,6 +16,7 @@ class Student extends Model
      *
      * @var string
      */
+    protected $primaryKey = 'id';
     protected $table = 'student';
     protected $fillable = [
         'name',
@@ -32,5 +33,15 @@ class Student extends Model
     public function practiceOffers()
     {
         return $this->belongsToMany(PracticeOffer::class, 'student_practice_offer', 'student_id', 'practice_offer_id');
+    }
+
+    public function practices()
+    {
+        return $this->hasMany(Practice::class, 'student_id');
+    }
+
+    public function companyReviews()
+    {
+        return $this->hasMany(CompanyReview::class, 'id_student');
     }
 }
