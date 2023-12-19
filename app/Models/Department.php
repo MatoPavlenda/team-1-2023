@@ -37,4 +37,10 @@ class Department extends Model
 
     }
 
+    public function ukf_employee()
+    {
+        return $this->belongsToMany(UKF_Employee::class, 'UKF_Employee_Department');
+
+    }
+
 }
