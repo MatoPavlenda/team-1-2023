@@ -78,6 +78,7 @@ Route::middleware(["auth"])->group(function () {
      */
     Route::get("/student/get/", [Student\GetController::class, 'getStudentById']);
     Route::get("/student/get-by-email", [Student\GetController::class, 'getStudentByEmail']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->get("/student/get-by-filter", [Student\GetController::class, 'getStudentByFilter']);
     Route::middleware("auth:{$vars->ukfEmployee}")->get("/student/get-all-students", [Student\GetController::class, 'getAllStudents']);
     Route::middleware("auth:{$vars->admin},{$vars->ukfEmployee}")->post("/student/create", [Student\CreateController::class, 'createStudent']);
     Route::middleware("auth:{$vars->admin}")->post("/student/delete/", [Student\DeleteController::class, 'deleteStudent']);
@@ -91,6 +92,7 @@ Route::middleware(["auth"])->group(function () {
     Route::post("/practice/create", [Practice\CreateController::class, 'createPractice']);
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->patch("/practice/edit", [Practice\EditController::class, 'updatePractice']);
     Route::get("/practice/get", [Practice\GetController::class, 'getPracticeById']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->get("/practice/get-by-filter", [Practice\GetController::class, 'getPracticeByFilter']);
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee}")->get("/practice/get-all", [Practice\GetController::class, 'getAllPractices']);
     Route::middleware("auth:{$vars->admin}")->delete("/practice/delete", [Practice\DeleteController::class, 'deletePractice']);
 
@@ -111,6 +113,7 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->student}")->post("company-review/create", [CompanyReviewController::class, 'createCompanyReview']);
     Route::get("company-review/get", [CompanyReviewController::class, 'getCompanyReview']);
     Route::get("company-review/get-all", [CompanyReviewController::class, 'getAllCompanyReviews']);
+    Route::get("company-review/get-by-filter", [CompanyReviewController::class, 'getCompanyReviewByFilter']);
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->student}")->patch("company-review/edit", [CompanyReviewController::class, 'editCompanyReview']);
     Route::middleware("auth:{$vars->admin}")->delete("company-review/delete", [CompanyReviewController::class, 'deleteCompanyReview']);
 

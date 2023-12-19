@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CompanyReview;
 use App\Http\Controllers\Controller;
 use App\Models\CompanyReview;
 use App\Models\Practice;
+use App\Services\DynamicFilterService;
 use App\Services\ResponseService;
 use App\Variables;
 use Illuminate\Http\Request;
@@ -13,10 +14,12 @@ use Illuminate\Support\Facades\Validator;
 class CompanyReviewController extends Controller
 {
     private $responseService;
+    private $dynamicFilterService;
 
-    public function __construct(ResponseService $responseService)
+    public function __construct(ResponseService $responseService, DynamicFilterService $dynamicFilterService)
     {
         $this->responseService = $responseService;
+        $this->dynamicFilterService = $dynamicFilterService;
     }
 
     public function createCompanyReview(Request $request)
@@ -36,19 +39,19 @@ class CompanyReviewController extends Controller
         $vars = new Variables();
         $user = auth()->user();
 
-        if($user->role==$vars->student) {
+        if ($user->role == $vars->student) {
             $student = $user->student;
             if (!$student) {
                 return $this->responseService->createErrorResponse("Student record not found");
             }
 
-            if($student->id !== $request->input('id_student')){
+            if ($student->id !== $request->input('id_student')) {
                 return $this->responseService->createUnauthorizedResponse("You cannot add reviews for other students");
             }
 
             $practiceId = $request->get('id_practice');
             $hasPractice = $student->practices()->where('id', $practiceId)->exists();
-            if(!$hasPractice){
+            if (!$hasPractice) {
                 return $this->responseService->createUnauthorizedResponse("You cannot add review for practice you have not been to");
             }
         }
@@ -68,6 +71,13 @@ class CompanyReviewController extends Controller
         } else {
             return $this->responseService->createErrorResponse("Company review not found");
         }
+    }
+
+    public function getCompanyReviewByFilter(Request $request)
+    {
+        $filteredCompanyReviews = $this->dynamicFilterService->applyFilters(new CompanyReview(),
+            ['id_company', 'id_practice', 'id_student', 'rating', 'review_comment'])->get();
+        return $this->responseService->createDataResponse($filteredCompanyReviews);
     }
 
     public function getAllCompanyReviews()
@@ -95,7 +105,7 @@ class CompanyReviewController extends Controller
         $vars = new Variables();
         $user = auth()->user();
 
-        if($user->role==$vars->student) {
+        if ($user->role == $vars->student) {
             $student = $user->student;
             if (!$student) {
                 return $this->responseService->createErrorResponse("Student record not found");
