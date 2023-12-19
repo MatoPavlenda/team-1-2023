@@ -29,11 +29,11 @@ class StudentReview extends Model
 
     public function company_employee()
     {
-        return $this->belongsTo(UKF_Employee::class, 'company_employee_id');
+        return $this->belongsTo(CompanyEmployee::class, 'company_employee_id');
     }
 
-    public function ukf_employee()
+    public function practice()
     {
-        return $this->belongsTo(UKF_Employee::class, 'ukf_employee_id');
+        return $this->belongsTo(Practice::class, 'practice_id');
     }
 }
