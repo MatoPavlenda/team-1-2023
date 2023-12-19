@@ -96,29 +96,27 @@ Route::middleware(["auth"])->group(function () {
     Route::get("company-review/get-all", [CompanyReviewController::class, 'getAllCompanyReviews']);
     Route::middleware("auth:{$vars->ukfEmployee},{$vars->student}")->patch("company-review/edit", [CompanyReviewController::class, 'editCompanyReview']);
     Route::middleware("auth:{$vars->admin}")->delete("company-review/delete", [CompanyReviewController::class, 'deleteCompanyReview']);
-});
 
-
-/*
+    /*
  * Department
  */
-Route::post('/department/create', [\App\Http\Controllers\Department\CreateController::class, 'createDepartment']);
-Route::get('/department/getAll', [\App\Http\Controllers\Department\GetController::class, 'getAllDepartments']);
-Route::get('/department/{id}/get', [\App\Http\Controllers\Department\GetController::class, 'getDepartmentById']);
-Route::post('/department/{id}/edit', [\App\Http\Controllers\Department\EditController::class, 'updateDepartment']);
-Route::post('/department/{id}/delete', [\App\Http\Controllers\Department\DeleteController::class, 'deleteDepartment']);
+    Route::middleware("auth:{$vars->admin}")->post('/department/create', [\App\Http\Controllers\Department\CreateController::class, 'createDepartment']);
+    Route::get('/department/getAll', [\App\Http\Controllers\Department\GetController::class, 'getAllDepartments']);
+    Route::get('/department/{id}/get', [\App\Http\Controllers\Department\GetController::class, 'getDepartmentById']);
+    Route::middleware("auth:{$vars->admin}")->post('/department/edit', [\App\Http\Controllers\Department\EditController::class, 'updateDepartment']);
+    Route::middleware("auth:{$vars->admin}")->post('/department/delete', [\App\Http\Controllers\Department\DeleteController::class, 'deleteDepartment']);
 
 
-/**
- *  Agreement
- */
-Route::post('/agreement/create', [Agreement\CreateController::class, 'createAgreement']);
-Route::post('/agreement/edit', [Agreement\EditController::class, 'updateAgreement']);
-Route::post('/agreement/delete', [Agreement\DeleteController::class, 'deleteAgreement']);
-Route::get('/agreement/get', [Agreement\GetController::class, 'getAgreement']);
+    /**
+     *  Agreement
+     */
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/agreement/create', [Agreement\CreateController::class, 'createAgreement']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/agreement/edit', [Agreement\EditController::class, 'updateAgreement']);
+    Route::middleware("auth:{$vars->ukfEmployee}")->post('/agreement/delete', [Agreement\DeleteController::class, 'deleteAgreement']);
+    Route::middleware("auth:{$vars->ukfEmployee},{$vars->companyEmployee},{$vars->student}")->get('/agreement/get', [Agreement\GetController::class, 'getAgreement']);
 
 
-
+});
 
 /**
  *  UKF Employee
