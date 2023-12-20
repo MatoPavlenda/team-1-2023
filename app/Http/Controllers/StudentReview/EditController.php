@@ -17,8 +17,13 @@ class EditController extends Controller
         $this->responseService = $responseService;
     }
 
-    public function updateStudentReview(Request $request, int $studentId, int $companyEmployeeId, int $practiceId)
+    public function updateStudentReview(Request $request)
     {
+        $studentId = $request->input('student_id');
+        $companyEmployeeId = $request->input('company_employee_id');
+        $practiceId = $request->input('practice_id');
+
+        // Validate the request data
         $validator = Validator::make($request->all(), [
             'student_id' => 'required|exists:student,id',
             'company_employee_id' => 'required|exists:company_employee,id',
@@ -46,3 +51,4 @@ class EditController extends Controller
         return $this->responseService->createSuccessfulResponse("Student Review updated successfully");
     }
 }
+
