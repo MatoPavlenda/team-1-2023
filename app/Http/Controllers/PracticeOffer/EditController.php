@@ -70,6 +70,7 @@ class EditController extends Controller
                 'start' => 'sometimes|required|date',
                 'end' => 'sometimes|required|date|after:start',
                 'student_count' => 'sometimes|required|integer|min:0',
+                'study_program_id' => 'sometimes|required|integer|min:0|exists:study_program,id'
             ]);
         } else {
             $validator = Validator::make($request->all(), [
@@ -80,6 +81,7 @@ class EditController extends Controller
                 'end' => 'sometimes|required|date|after:start',
                 'student_count' => 'sometimes|required|integer|min:0',
                 'company_employee_id' => 'sometimes|required|integer|min:0|exists:company_employee,id',
+                'study_program_id' => 'sometimes|required|integer|min:0|exists:study_program,id'
             ]);
         }
 
@@ -87,7 +89,7 @@ class EditController extends Controller
             return $this->responseService->createInvalidDataResponse($validator->errors());
         }
 
-        $practiceOffer = PracticeOffer::find($id);
+        $practiceOffer = PracticeOffer::with('studyPrograms')->find($id);
 
         if ($user->role == $vars->companyEmployee) {
             if ($practiceOffer->tutor->company->id != $user->companyEmployee->company->id) {
@@ -110,6 +112,12 @@ class EditController extends Controller
             ['student_count', $student_count],
             ['tutor_id', $companyEmployeeId]
         ]);
+
+        $studyProgramId = $request->get('study_program_id');
+
+        if ($studyProgramId && $practiceOffer->studyPrograms()->first()->id !== $studyProgramId) {
+            $practiceOffer->studyPrograms()->sync([$studyProgramId]);
+        }
 
         $practiceOffer->save();
 

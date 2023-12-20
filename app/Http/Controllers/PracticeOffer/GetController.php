@@ -48,7 +48,7 @@ class GetController extends Controller
         $id = $request->input('id') ?? '';
 
         if ($id !== '') {
-            $practiceOffer = PracticeOffer::with('tutor.company')->find($id);
+            $practiceOffer = PracticeOffer::with(['tutor.company', 'studyPrograms', 'practices', 'students'])->find($id);
 
             if (!$practiceOffer) {
                 return $this->responseService->createErrorResponse();
@@ -66,7 +66,7 @@ class GetController extends Controller
      */
     public function method2(Request $request)
     {
-        $practiceOffers = PracticeOffer::with('tutor.company')->get();
+        $practiceOffers = PracticeOffer::with(['tutor.company', 'studyPrograms', 'practices', 'students'])->get();
         return $this->responseService->createDataResponse($practiceOffers);
     }
     /**

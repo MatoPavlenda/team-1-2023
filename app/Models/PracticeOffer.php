@@ -43,4 +43,9 @@ class PracticeOffer extends Model
     {
         return $this->hasMany(Practice::class, 'practice_offer_id');
     }
+
+    public function studyPrograms()
+    {
+        return $this->belongsToMany(StudyProgram::class, 'practice_offer_study_program');
+    }
 }

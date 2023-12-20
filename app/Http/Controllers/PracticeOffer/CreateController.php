@@ -59,6 +59,7 @@ class CreateController extends Controller
                 'start' => 'required|date',
                 'end' => 'required|date|after:start',
                 'student_count' => 'required|integer|min:0',
+                'study_program_id' => 'required|integer|min:0|exists:study_program,id'
             ]);
         } else {
             $validator = Validator::make($request->all(), [
@@ -68,6 +69,7 @@ class CreateController extends Controller
                 'end' => 'required|date|after:start',
                 'student_count' => 'required|integer|min:0',
                 'company_employee_id' => 'required|integer|min:0|exists:company_employee,id',
+                'study_program_id' => 'required|integer|min:0|exists:study_program,id'
             ]);
         }
 
@@ -95,6 +97,11 @@ class CreateController extends Controller
             $practiceOffer->student_count = $student_count;
 
             $practiceOffer->save();
+
+            $studyProgramId = $request->get('study_program_id');
+            if ($studyProgramId) {
+                $practiceOffer->studyPrograms()->attach($studyProgramId);
+            }
 
             return $this->responseService->createSuccessfulResponse();
 //        } else {
