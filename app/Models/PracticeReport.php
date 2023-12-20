@@ -18,6 +18,9 @@ class PracticeReport extends Model
         'description',
     ];
 
+    public $table = 'practice_report';
+
+
     protected $primaryKey = 'id';
 
     protected $keyType = 'int';
