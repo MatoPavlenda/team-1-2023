@@ -5,6 +5,7 @@ namespace App\Http\Controllers\StudentReview;
 use App\Http\Controllers\Controller;
 use App\Models\StudentReview;
 use App\Services\ResponseService;
+use Illuminate\Http\Request;
 
 class GetController extends Controller
 {
@@ -15,8 +16,12 @@ class GetController extends Controller
         $this->responseService = $responseService;
     }
 
-    public function getStudentReviewById(int $studentId, int $companyEmployeeId, int $practiceId)
+    public function getStudentReviewById(Request $request)
     {
+        $studentId = $request->input('student_id');
+        $companyEmployeeId = $request->input('company_employee_id');
+        $practiceId = $request->input('practice_id');
+
         $studentReview = StudentReview::where([
             'student_id' => $studentId,
             'company_employee_id' => $companyEmployeeId,

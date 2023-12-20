@@ -24,7 +24,7 @@ class CreateController extends Controller
             'company_employee_id' => 'required|exists:company_employee,id',
             'practice_id' => 'required|exists:practice,id',
             'rating' => 'required|integer',
-            'comment' => 'sometimes|string',
+            'comment' => 'required|string',
         ]);
 
         if ($validator->fails()) {
