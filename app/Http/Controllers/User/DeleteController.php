@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\PracticeOffer;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
-use App\Models\CompanySchoolContract;
-use App\Models\PracticeOffer;
+use App\Models\User;
 use App\Services\EditDbRecordService;
 use App\Services\ResponseService;
 use App\Services\ValidatorService;
@@ -48,12 +47,10 @@ class DeleteController extends Controller
     {
         $id = $request->input('id');
 
-        $practiceOffer = PracticeOffer::find($id);
+        $user = User::find($id);
 
-        if ($practiceOffer) {
-            $practiceOffer->studyPrograms()->detach();
-
-            $practiceOffer->delete();
+        if ($user) {
+            $user->delete();
 
             return $this->responseService->createSuccessfulResponse();
         } else {

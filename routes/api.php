@@ -71,6 +71,19 @@ Route::middleware(["auth"])->group(function () {
     Route::middleware("auth:{$vars->admin}")->delete("/contract/delete", [\App\Http\Controllers\Contract\DeleteController::class, "method"]);
 
 
+
+    /**
+     *  User (M)
+     */
+    Route::middleware("auth:{$vars->admin}")->post("/user/create", [\App\Http\Controllers\User\CreateController::class, "method"]);
+    Route::middleware("auth:{$vars->admin}")->patch("/user/edit", [\App\Http\Controllers\User\EditController::class, "method"]);
+    Route::middleware("auth:{$vars->admin}")->delete("/user/delete", [\App\Http\Controllers\User\DeleteController::class, "method"]);
+    Route::middleware("auth:{$vars->admin}")->get("/user/get", [\App\Http\Controllers\User\GetController::class, "method"]);
+    Route::middleware("auth:{$vars->admin}")->get("/user/get-all", [\App\Http\Controllers\User\GetController::class, "method2"]);
+    Route::middleware("auth:{$vars->admin}")->get("/user/get-by-filter", [\App\Http\Controllers\User\GetController::class, "method3"]);
+
+
+
     /**
      *  Student
      */
